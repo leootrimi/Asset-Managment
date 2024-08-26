@@ -1,0 +1,111 @@
+.login-container {
+  display: flex;
+  width: 100%;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  background-color: #f5f5f5; /* Light background color */
+}
+
+/* Card styling */
+.login-card {
+  background: white;
+  padding: 20px;
+  border-radius: 10px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  text-align: center;
+  width: 100%;
+  max-width: 400px; /* Limit the card width */
+}
+
+.login-icon-img {
+  width: 40px;
+  height: 40px;
+}
+
+.login-heading {
+  font-size: 22px;
+  color: #1E2A5E;
+}
+
+.login-message {
+  font-size: 16px;
+  color: #777;
+}
+
+.login-input-group {
+  margin-bottom: 15px;
+  text-align: left; 
+}
+
+.login-input-group label {
+  display: block;
+  margin-bottom: 5px;
+  color: #777;
+  font-size: 16px;
+}
+
+.login-input-group input {
+  width: 100%;
+  padding: 10px;
+  border: none;
+  border-bottom: 2px solid #ccc;
+  border-radius: 0;
+  outline: none;
+  transition: border-color 0.3s;
+  box-sizing: border-box;
+}
+
+.login-input-group input:focus {
+  border-bottom: 2px solid #55679C; /* Change border color on focus */
+}
+
+.login-input-group input::placeholder {
+  color: #aaa; /* Placeholder text color */
+  opacity: 1; /* Ensure placeholder is visible */
+}
+
+.login-options {
+  display: flex;
+  justify-content: space-between; /* Space between checkbox and link */
+  margin-bottom: 15px; /* Space below the options */
+  align-items: center; /* Align items vertically */
+}
+
+.remember-me {
+  display: flex;
+  align-items: center;
+  font-size: 13px;
+  color: #777;
+}
+
+.remember-me input {
+  margin-right: 5px; /* Space between checkbox and label */
+}
+
+.forgot-password {
+  color: #55679C; /* Link color */
+  font-size: 13px; 
+  text-decoration: none; /* Remove underline */
+}
+
+.forgot-password:hover {
+  text-decoration: underline; /* Underline on hover */
+}
+
+/* Button styling */
+.login-button {
+  width: 100%;
+  padding: 10px;
+  border: none;
+  margin-top: 20px;
+  border-radius: 5px;
+  background-color: #55679C;
+  color: white; /* Text color for better contrast */
+  font-size: 16px;
+  cursor: pointer;
+}
+
+.login-button:hover {
+  background-color: #1E2A5E;
+}
