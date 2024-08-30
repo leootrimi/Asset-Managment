@@ -2,7 +2,7 @@ import React from 'react';
 import { BiNotification } from 'react-icons/bi';
 import { Dropdown } from 'react-bootstrap';
 import 'bootstrap/dist/css/bootstrap.min.css'; 
-import './Navbar.css';
+// import './Navbar.css';
 
 function Navbar({pageTitle}) {
   return (
