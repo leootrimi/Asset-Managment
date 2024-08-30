@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 
-const Setting = ({ onUpdate }) => {
+const Setting = () => {
   const [name, setName] = useState('');
   const [surname, setSurname] = useState('');
   const [email, setEmail] = useState('');
@@ -9,6 +10,8 @@ const Setting = ({ onUpdate }) => {
   const [valuableCount, setValuableCount] = useState(1);
   const [valuableNames, setValuableNames] = useState(['']);
   const [deprecationValues, setDeprecationValues] = useState(['']);
+
+  const navigate = useNavigate();
 
   const handleValuableCountChange = (e) => {
     const count = parseInt(e.target.value, 10);
@@ -33,20 +36,20 @@ const Setting = ({ onUpdate }) => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    if (typeof onUpdate === 'function') {
-      onUpdate({
-        name,
-        surname,
-        email,
-        jobTitle,
-        department,
-        valuableCount,
-        valuableNames,
-        deprecationValues,
-      });
-    } else {
-      console.error('onUpdate prop is not a function');
-    }
+    const profileData = {
+      name,
+      surname,
+      email,
+      jobTitle,
+      department,
+      valuableCount,
+      valuableNames,
+      deprecationValues,
+    };
+    // Save to localStorage
+    localStorage.setItem('profileData', JSON.stringify(profileData));
+    // Navigate to Profile without reload
+    navigate('/profile');
   };
 
   return (

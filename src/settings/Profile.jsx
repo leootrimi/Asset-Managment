@@ -1,6 +1,25 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 
-const Profile = ({ profileData }) => {
+const Profile = () => {
+  const [profileData, setProfileData] = useState({
+    name: '',
+    surname: '',
+    email: '',
+    jobTitle: '',
+    department: '',
+    valuableCount: 1,
+    valuableNames: [''],
+    deprecationValues: [''],
+  });
+
+  useEffect(() => {
+    // Fetch data from localStorage
+    const savedProfileData = localStorage.getItem('profileData');
+    if (savedProfileData) {
+      setProfileData(JSON.parse(savedProfileData));
+    }
+  }, []); // Run only once when component mounts
+
   return (
     <div>
       <h2>Profile</h2>

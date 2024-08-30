@@ -51,15 +51,11 @@ function App() {
               <div className='main-layout'>
               <ProfileSideBar />
               <div className='content'>
-               <Profile profileData={profileData}/> 
-                <Routes>
-                  {
-                    
-                    //Profile component replace with New Setting Component
-                   <Route path='/settings' element={<Setting onUpdate={handleProfileUpdate} />} /> 
-                  }
-                </Routes>
-              </div>
+        <Routes>
+          <Route path='/settings' element={<Setting onUpdate={handleProfileUpdate} />} />
+          <Route path='/' element={<Profile profileData={profileData} />} />
+        </Routes>
+      </div>
             </div>
             }
             />
