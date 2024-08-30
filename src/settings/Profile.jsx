@@ -1,28 +1,21 @@
 import React from 'react';
 
-const Profile = () => {
+const Profile = ({ profileData }) => {
   return (
-    <div >
-      <h1>User Profile</h1>
-      <section className="profile-details">
-        <h2>Personal Details</h2>
-        <p><strong>Full Name:</strong> John Doe</p>
-        <p><strong>Email:</strong> john.doe@example.com</p>
-        <p><strong>Position:</strong> Software Engineer</p>
-        <p><strong>Department:</strong> Engineering</p>
-      </section>
-      
-      <section className="valuables">
-        <h2>Valuables</h2>
-        <div className="valuable-item">
-          <h3>Valuable 1</h3>
-          <p><strong>Deprecation Value:</strong> $500</p>
+    <div>
+      <h2>Profile</h2>
+      <p><strong>Name:</strong> {profileData.name}</p>
+      <p><strong>Surname:</strong> {profileData.surname}</p>
+      <p><strong>Email:</strong> {profileData.email}</p>
+      <p><strong>Job Title:</strong> {profileData.jobTitle}</p>
+      <p><strong>Department:</strong> {profileData.department}</p>
+      <p><strong>Valuable Count:</strong> {profileData.valuableCount}</p>
+      {profileData.valuableNames.map((name, index) => (
+        <div key={index}>
+          <p><strong>Valuable {index + 1} Name:</strong> {name}</p>
+          <p><strong>Deprecation Value {index + 1} (€):</strong> {profileData.deprecationValues[index]}</p>
         </div>
-        <div className="valuable-item">
-          <h3>Valuable 2</h3>
-          <p><strong>Deprecation Value:</strong> $300</p>
-        </div>
-      </section>
+      ))}
     </div>
   );
 };

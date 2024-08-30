@@ -1,14 +1,31 @@
+import React, { useState } from 'react';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import logo from './logo.svg';
 import Login from './pages/login/Login';
 import SideBar from './components/Sidebar/SideBar';
 import ProfileSideBar from './components/Sidebar/ProfileSideBar';
 import Profile from './settings/Profile';
+import Setting from './settings/Setting';
 //import Dashboard from './pages/dashboard/Dashboard';
 import './App.css';
 import { useLayoutEffect } from 'react';
 
 function App() {
+
+  const [profileData, setProfileData] = useState({
+    name: '',
+    surname: '',
+    email: '',
+    jobTitle: '',
+    department: '',
+    valuableCount: 1,
+    valuableNames: [''],
+    deprecationValues: [''],
+  });
+
+  const handleProfileUpdate = (data) => {
+    setProfileData(data);
+  };
   return (
     <Router>
       
@@ -34,11 +51,12 @@ function App() {
               <div className='main-layout'>
               <ProfileSideBar />
               <div className='content'>
-              <Profile />
+               <Profile profileData={profileData}/> 
                 <Routes>
                   {
+                    
                     //Profile component replace with New Setting Component
-                   <Route path='/settings' element={<Profile />} /> 
+                   <Route path='/settings' element={<Setting onUpdate={handleProfileUpdate} />} /> 
                   }
                 </Routes>
               </div>
