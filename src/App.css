@@ -1,5 +1,6 @@
 html, body, #root {
   height: 100%;
+  
 }
 
 .main-layout{
@@ -15,4 +16,8 @@ html, body, #root {
   display: flex;
   gap: 1.5rem;
   justify-content: space-between;
+  background-image: url('./assets/background.svg');
+    background-size: cover; 
+    background-repeat: no-repeat; 
+  
 }

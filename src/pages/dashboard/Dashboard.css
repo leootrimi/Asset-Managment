@@ -1,0 +1,125 @@
+.dashboard {
+    width: 100%;
+    padding: 5px;
+    border-radius: 10px;
+    font-family: Arial, sans-serif;
+    background-color: #f0f2f5;
+
+}
+
+.dashboard-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+
+}
+.profile-icon {
+    font-size: 2.5rem;
+}
+
+.header-left h1 {
+    font-size: 24px;
+    margin: 0;
+}
+
+.header-left p {
+    font-size: 14px;
+    color: #888;
+}
+
+.header-right input, 
+.header-right select {
+    margin-right: 10px;
+    padding: 5px;
+    border-radius: 6px;
+    border: 1px solid #ccc;
+}
+
+/* .dashboard > .dashboard-metrics {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 0.8rem;
+    gap: 10px;
+
+} */
+
+.metric-box {
+    padding: 20px;
+    background-color: #fff;
+    border-radius: 12px;
+    text-align: left;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.metric-icon {
+    font-size: 24px;
+    color: #555;
+    margin-bottom: 10px;
+}
+
+.metric-details h3 {
+    margin: 0;
+    font-size: 14px;
+    color: #888;
+}
+
+.metric-number {
+    font-size: 20px;
+    font-weight: bold;
+    margin: 5px 0;
+}
+
+.metric-change {
+    font-size: 12px;
+    color: #888;
+}
+
+.metric-change.positive {
+    color: green;
+}
+
+.metric-change.negative {
+    color: red;
+}
+/* .sales-chart{
+    display: flex;
+    justify-content: space-between;
+    gap: 10px;
+} */
+
+.total-price, chart2 {
+    background-color: #fff;
+    /* width: 46%; */
+    padding: 5px 20px;
+    border-radius: 12px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    /* margin-bottom: 20px; */
+}
+
+.dashboard-lower-section {
+    /* display: flex;
+    justify-content: space-between;
+    gap: 10px; */
+}
+
+.countries-list, 
+.best-selling-products {
+    /* width: 46%; */
+    background-color: #fff;
+    padding: 0px 20px;
+    border-radius: 12px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    
+}
+
+.countries-list ul {
+    list-style-type: none;
+    padding: 0;
+}
+
+.countries-list li {
+    margin-bottom: 10px;
+    display: flex;
+    justify-content: space-between;
+}
+
