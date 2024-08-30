@@ -17,7 +17,7 @@ function Navbar({pageTitle}) {
                     John Doe
                 </Dropdown.Toggle>
 
-                <Dropdown.Menu className="">
+                <Dropdown.Menu className="text-center">
                     <Dropdown.Item href="#/action-1">Profile</Dropdown.Item>
                     <Dropdown.Item href="#/action-2">Settings</Dropdown.Item>
                     <Dropdown.Item href="#/action-3">Log out</Dropdown.Item>
