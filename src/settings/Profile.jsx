@@ -13,12 +13,11 @@ const Profile = () => {
   });
 
   useEffect(() => {
-    // Fetch data from localStorage
     const savedProfileData = localStorage.getItem('profileData');
     if (savedProfileData) {
       setProfileData(JSON.parse(savedProfileData));
     }
-  }, []); // Run only once when component mounts
+  }, []); 
 
   return (
     <div>

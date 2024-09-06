@@ -53,7 +53,7 @@ const Dashboard = () => {
     
     return (
         <div className="dashboard m-3 mt-0">
-             <Navbar pageTitle="information" />
+             <Navbar pageTitle="General Information" />
             <div className="dashboard-header">
                 <div className="header-left">
                     <h1>Dashboard</h1>

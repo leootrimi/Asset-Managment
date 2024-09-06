@@ -1,10 +1,17 @@
 import React, { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { Table, Pagination } from 'react-bootstrap';
 import { BiEdit, BiPlus, BiSearch } from 'react-icons/bi';
 import Navbar from '../../components/navbar/Navbar';
 import './ShowUsers.css';
 
-function ShowUsers() {
+function ShowUsers({ selectedLogo }) {
+
+    const navigate = useNavigate();
+
+    const handleRowClick = (employeeId) => {
+        navigate(`/admin/profile/${employeeId}`);
+    };
     const data = [
         { id: 24005, name: 'John Doe', email: 'john@example.com', age: 28, country: 'USA', position: 'Product Manager', reg: '24/12/2022', departament: 'Matrics' },
         { id: 74205, name: 'Jane Smith', email: 'jane@example.com', age: 34, country: 'Canada', position: 'Product Manager', reg: '24/12/2022', departament: '91Life' },
@@ -31,7 +38,6 @@ function ShowUsers() {
 
     const [searchTerm, setSearchTerm] = useState('');
     const [jobTitleFilter, setJobTitleFilter] = useState('');
-    const [equipmentFilter, setEquipmentFilter] = useState('');
 
     const handlePageChange = (pageNumber) => setCurrentPage(pageNumber);
 
@@ -39,7 +45,7 @@ function ShowUsers() {
         return (
             (!searchTerm || item.name.toLowerCase().includes(searchTerm.toLowerCase())) &&
             (!jobTitleFilter || item.position === jobTitleFilter) &&
-            (!equipmentFilter || item.departament.includes(equipmentFilter))
+            (!selectedLogo || item.departament === selectedLogo)
         );
     });
 
@@ -47,7 +53,7 @@ function ShowUsers() {
 
     return (
         <div className="container">
-             <Navbar pageTitle="employers" />
+            <Navbar pageTitle="Employers" />
             <div className="d-flex flex-row justify-content-between p-1">
                 <div className="h">
                     <h5>User list</h5>
@@ -81,18 +87,6 @@ function ShowUsers() {
                         <option value="Project Manager">Project Manager</option>
                     </select>
                 </div>
-                <div className="h col-2">
-                    <h6>Equipment</h6>
-                    <select
-                        className='form-control'
-                        value={equipmentFilter}
-                        onChange={(e) => setEquipmentFilter(e.target.value)}
-                    >
-                        <option value="">All</option>
-                        <option value="In use">In use</option>
-                        <option value="No usage">No usage</option>
-                    </select>
-                </div>
                 <div className="bi p-2 col-2 d-flex justify-content-center mt-2">
                     <button type="button" className='btn1 w-75 mt-2'><BiSearch /></button>
                 </div>
@@ -124,7 +118,7 @@ function ShowUsers() {
                                 <td>{item.reg}</td>
                                 <td>{item.departament}</td>
                                 <td className="last">
-                                    <a href="#" className="edit-link"><BiEdit /></a>
+                                    <a onClick={() => handleRowClick(item.id)} className="edit-link"><BiEdit /></a>
                                 </td>
                             </tr>
                         ))}
@@ -143,9 +137,9 @@ function ShowUsers() {
                                 {number + 1}
                             </Pagination.Item>
                         ))}
-                    <Pagination.Next onClick={() => handlePageChange(currentPage + 1)} disabled={currentPage === totalPages} />
-                    <Pagination.Last onClick={() => handlePageChange(totalPages)} disabled={currentPage === totalPages} />
-                </Pagination>
+                        <Pagination.Next onClick={() => handlePageChange(currentPage + 1)} disabled={currentPage === totalPages} />
+                        <Pagination.Last onClick={() => handlePageChange(totalPages)} disabled={currentPage === totalPages} />
+                    </Pagination>
                 </div>
             </div>
         </div>

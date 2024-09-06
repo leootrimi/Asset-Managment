@@ -1,5 +1,7 @@
 const items = [
     {
+      tag: '91-PR-01',
+      serial: 'SN-32450014',
       type: 'Laptop',
       purchaseDate: '2023-01-01',
       price: 1200,
@@ -8,6 +10,8 @@ const items = [
       remainingTime: 3,
     },
     {
+      tag: '91-PR-02',
+      serial: 'SN-3245005',
       type: 'Laptop',
       purchaseDate: '2023-01-01',
       price: 1200,
@@ -16,6 +20,8 @@ const items = [
       remainingTime: 3,
     },
     {
+      tag: '91-PR-03',
+      serial: 'SN-4245004',
     type: 'Headphones',
     purchaseDate: '2022-06-15',
     price: 200,
@@ -24,6 +30,7 @@ const items = [
     remainingTime: 2,
     },
     {
+       serial: 'SN-6245004',
         type: 'Monitor',
         purchaseDate: '2023-01-01',
         price: 1200,
@@ -32,6 +39,7 @@ const items = [
         remainingTime: 3,
       },
       {
+        serial: 'SN-7245004',
         type: 'Laptop',
         purchaseDate: '2023-01-01',
         price: 1200,
@@ -40,6 +48,7 @@ const items = [
         remainingTime: 3,
       },
       {
+        serial: 'SN-1245004',
       type: 'Headphones',
       purchaseDate: '2022-06-15',
       price: 200,
@@ -48,6 +57,7 @@ const items = [
       remainingTime: 2,
       },
       {
+        serial: 'SN-32430043',
         type: 'Headphones',
         purchaseDate: '2022-06-15',
         price: 200,
@@ -56,6 +66,7 @@ const items = [
         remainingTime: 'Out date',
         },
         {
+          serial: 'SN-32450024',
           type: 'Mouse',
           purchaseDate: '2023-01-01',
           price: 1200,
@@ -64,6 +75,7 @@ const items = [
           remainingTime: 3,
         },
         {
+          serial: 'SN-3289004',
           type: 'TV',
           purchaseDate: '2023-01-01',
           price: 1200,
@@ -72,6 +84,7 @@ const items = [
           remainingTime: 3,
         },
         {
+          serial: 'SN-245004',
           type: 'Mouse',
           purchaseDate: '2023-01-01',
           price: 1200,
@@ -80,14 +93,109 @@ const items = [
           remainingTime: 3,
         },
         {
+          serial: 'AN-3245004',
           type: 'TV',
           purchaseDate: '2023-01-01',
           price: 1200,
           depreciation: 240,
           currentPrice: 720,
           remainingTime: 3,
+        },
+        {
+          serial: 'SN-3245004',
+          type: 'Laptop',
+          purchaseDate: '2023-01-01',
+          price: 1200,
+          depreciation: 240,
+          currentPrice: 720,
+          remainingTime: 3,
+          employeeId: '1',
+          employeeName: 'John Doe',
+          status: 'Assigned',
+          department: 'IT Support',
+          assignedDate: 'March 15, 2023',
+          model: 'Dell XPS 13',
+          warrantyExpiration: '2026-01-01'
         },
   ];
+
+
+  const data = [
+    { 
+        employeeId: 101, 
+        type: 'Laptop', 
+        model: 'Dell XPS 13', 
+        serialNumber: 'SN-3245001', 
+        status: 'In Use', 
+        roleOfEmployee: 'Software Engineer', 
+        assignedForm: 'Y', 
+        purchaseDate: '2023-01-15', 
+        price: 1200, 
+        supplier: 'Tech World', 
+        dateOfReceipt: '2023-01-20', 
+        warrantyExpirationDate: '2026-01-15' 
+    },
+    { 
+        employeeId: 102, 
+        type: 'Headphones', 
+        model: 'MacBook Pro', 
+        serialNumber: 'SN-3245002', 
+        status: '.', 
+        roleOfEmployee: 'Project Manager', 
+        assignedForm: 'Y', 
+        purchaseDate: '2022-08-22', 
+        price: 2000, 
+        supplier: 'Apple Store', 
+        dateOfReceipt: '2022-08-25', 
+        warrantyExpirationDate: '2025-08-22',
+        logo: '91Life'
+    },
+    { 
+        employeeId: 103, 
+        type: 'Laptop', 
+        model: 'HP Spectre x360', 
+        serialNumber: 'SN-3245003', 
+        status: 'In Use', 
+        roleOfEmployee: 'DevOps Engineer', 
+        assignedForm: 'N', 
+        purchaseDate: '2023-02-10', 
+        price: 1500, 
+        supplier: 'HP Store', 
+        dateOfReceipt: '2023-02-12', 
+        warrantyExpirationDate: '2026-02-10',
+        logo: 'Matrics'
+    },
+    { 
+        employeeId: 104, 
+        type: 'Laptop', 
+        model: 'Lenovo ThinkPad X1', 
+        serialNumber: 'SN-3245004', 
+        status: 'In Use', 
+        roleOfEmployee: 'Data Analyst', 
+        assignedForm: 'Y', 
+        purchaseDate: '2021-11-12', 
+        price: 1300, 
+        supplier: 'Lenovo Store', 
+        dateOfReceipt: '2021-11-15', 
+        warrantyExpirationDate: '2024-11-12',
+        logo: 'Matrics'
+    },
+    { 
+        employeeId: 105, 
+        type: 'Laptop', 
+        model: 'Asus ZenBook', 
+        serialNumber: 'SN-3245005', 
+        status: 'In Use', 
+        roleOfEmployee: 'UX Designer', 
+        assignedForm: 'Y', 
+        purchaseDate: '2023-03-25', 
+        price: 1100, 
+        supplier: 'Asus Store', 
+        dateOfReceipt: '2023-03-28', 
+        warrantyExpirationDate: '2026-03-25' ,
+        logo: '91Life'
+    }
+];
   
-  export { items };
+  export { items, data };
   
