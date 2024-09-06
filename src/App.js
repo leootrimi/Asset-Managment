@@ -1,4 +1,4 @@
-import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
 import logo from './logo.svg';
 import Login from './pages/login/Login';
 import Navbar from './components/navbar/Navbar';
@@ -15,6 +15,7 @@ import React, { useState } from 'react';
 import { useLayoutEffect } from 'react';
 
 function App() {
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [profileData, setProfileData] = useState({
     name: '',
     surname: '',
@@ -26,6 +27,17 @@ function App() {
     deprecationValues: [''],
   });
 
+  const handleLogin = () => {
+    setIsLoggedIn(true);
+  };
+
+  //logout logic unimplemented
+  /*
+  const handleLogout = () => {
+    setIsLoggedIn(false);
+  };
+  */
+
   const handleProfileUpdate = (data) => {
     setProfileData(data);
   };
@@ -34,8 +46,12 @@ function App() {
     <Router>
       
           <Routes>
-            <Route path="/" element={<Login />} /> 
-
+            {/* <Route path="/" element={<Login />} />  */}
+            
+            <Route
+          path="/"
+          element={isLoggedIn ? <Navigate to="/admin/dashboard" /> : <Login onLogin={handleLogin} />}
+            />
 
             <Route
               path="/admin/*"
@@ -55,7 +71,8 @@ function App() {
               />
 
           {/* PROFILE PATH */}
-          <Route path="/profile/*"
+          <Route 
+          path="/profile/*"
           element={
             <div className='main-layout'>
             <ProfileSideBar />
