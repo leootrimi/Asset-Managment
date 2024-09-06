@@ -3,30 +3,40 @@ import { ReactComponent as LoginIcon } from '../../assets/signin.svg';
 import './Login.css';
 import { useNavigate } from 'react-router-dom';
 
-const Login = ({onLogin}) => {
+const Login = ({ onLogin }) => {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
+  const [error, setError] = useState('');
   const navigate = useNavigate(); // Initialize navigate
   
-
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    // Simple validation example
-    if (username === 'admin' || password === 'admin') {
-      alert('Login Successful');
-      onLogin();
-      navigate('/admin/dashboard'); // Redirect to the home page after successful login
+
+    try {
+      const response = await fetch('http://127.0.0.1:8000/auth/login/', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          username,
+          password,
+        }),
+      });
+
+      if (response.ok) {
+        const data = await response.json();
+        alert('Login Successful');
+        onLogin();  // Callback to update parent state (if needed)
+        navigate('/admin/dashboard');  // Navigate to dashboard after successful login
+      } else {
+        const errorData = await response.json();
+        setError(errorData.error || 'Login failed. Please try again.');
+      }
+    } catch (err) {
+      setError('Something went wrong. Please try again later.');
     }
-    
-  
   };
-/*
-  const handleLogout = () => {
-    setIsLoggedIn(false);
-    setUsername('');
-    setPassword('');
-  };
-*/
 
   return (
     <div className="login-container">
@@ -36,6 +46,8 @@ const Login = ({onLogin}) => {
         </div>
         <h1 className="login-heading">Welcome!</h1>
         <p className="login-message">Sign in to your account</p>
+
+        {error && <p className="error-message">{error}</p>} {/* Show error if login fails */}
 
         <form onSubmit={handleSubmit}>
           <div className="login-input-group">
@@ -70,9 +82,7 @@ const Login = ({onLogin}) => {
             <a href="#" className="forgot-password">Forgot password?</a>
           </div>
           <button type="submit" className="login-button">Sign In</button>
-    
         </form>
-
       </div>
     </div>
   );

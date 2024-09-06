@@ -14,29 +14,31 @@ import AddEquipment from './pages/addEquipment/AddEquipment';
 import Deprecation from './pages/deprecation/Deprecation';
 import EquipmentProfile from './pages/EquipmentProfile/EquipmentProfile';
 import './App.css';
-import React, { useState } from 'react';
-import { useLayoutEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Navigate } from 'react-router-dom';
 
 function App() {
-  // Initialize state from localStorage
   const [selectedLogo, setSelectedLogo] = useState(() => {
     return localStorage.getItem('selectedLogo') || '91Life';
   });
 
   const [isLoggedIn, setIsLoggedIn] = useState(false);
+  
   const handleLogin = () => {
     setIsLoggedIn(true);
   };
 
+  useEffect(() => {
+    localStorage.setItem('selectedLogo', selectedLogo);
+  }, [selectedLogo]);
 
   return (
     <Router>
       <Routes>
-      <Route
+        <Route
           path="/"
           element={isLoggedIn ? <Navigate to="/admin/dashboard" /> : <Login onLogin={handleLogin} />}
-            />
+        />
         <Route
           path="/admin/*"
           element={
@@ -56,12 +58,9 @@ function App() {
                 </Routes>
               </div>
             </div>
-            }
-            />
-
-
-
-          </Routes>
+          }
+        />
+      </Routes>
     </Router>
   );
 }
