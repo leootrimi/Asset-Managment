@@ -10,9 +10,13 @@ import Dashboard from './pages/dashboard/Dashboard';
 import AddUser from './pages/addUser/AddUser';
 import ShowUsers from './pages/showUsers/ShowUsers';
 import ShowEquipment from './pages/showEquipment/ShowEquipment';
+import AddEquipment from './pages/addEquipment/AddEquipment';
+import Deprecation from './pages/deprecation/Deprecation';
+import EquipmentProfile from './pages/EquipmentProfile/EquipmentProfile';
 import './App.css';
 import React, { useState } from 'react';
 import { useLayoutEffect } from 'react';
+import { Navigate } from 'react-router-dom';
 
 function App() {
   // Initialize state from localStorage
@@ -21,20 +25,10 @@ function App() {
   });
 
   const [isLoggedIn, setIsLoggedIn] = useState(false);
-  const [profileData, setProfileData] = useState({
-    name: '',
-    surname: '',
-    email: '',
-    jobTitle: '',
-    department: '',
-    valuableCount: 1,
-    valuableNames: [''],
-    deprecationValues: [''],
-  });
-
-  const handleProfileUpdate = (data) => {
-    setProfileData(data);
+  const handleLogin = () => {
+    setIsLoggedIn(true);
   };
+
 
   return (
     <Router>
@@ -57,8 +51,8 @@ function App() {
                   <Route path='/add/equipment' element={<AddEquipment />} />
                   <Route path='/equipment/:serial' element={<EquipmentProfile />} />
                   <Route path='/deprecation' element={<Deprecation />} />
-                  <Route path='/profile/settings' element={<Setting onUpdate={handleProfileUpdate} />} />
-                  <Route path='/profile/:id' element={<Profile profileData={profileData} />} />
+                  <Route path='/profile/settings' element={<Setting />} />
+                  <Route path='/profile/:id' element={<Profile />} />
                 </Routes>
               </div>
             </div>
