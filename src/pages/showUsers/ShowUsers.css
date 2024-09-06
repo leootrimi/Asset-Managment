@@ -1,0 +1,59 @@
+.b, .btn1 {
+  background-color: #55679C;
+  border: none;
+  border-radius: 5px;
+  color: white;
+  text-decoration: none;
+}
+.m {
+    background-color: #fff;
+    border-radius: 12px;
+    text-align: left;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+
+}
+  .modern-table {
+    background-color: #ffffff; 
+    border-collapse: separate;
+    border-spacing: 0;
+    border-radius: 15px;
+    overflow: hidden; 
+  }
+  
+  .thead-dark {
+    background-color: #343a40; 
+    color: #ffffff; 
+  }
+  
+  .tr1 th {
+    padding: 10px;
+    font-size: 13px;
+    text-transform: uppercase; 
+    border-bottom: 2px solid #dee2e6;
+  }
+  
+  .modern-table tbody tr {
+    transition: background-color 0.3s ease; 
+  }
+  
+  .modern-table tbody tr:hover {
+    background-color: #f1f3f5;
+  }
+  
+  .modern-table td {
+    padding: 12px;
+    vertical-align: middle;
+    font-size: 14px;
+    border-bottom: 1px solid #dee2e6; 
+  }
+  
+  .last a.edit-link {
+    color: #55679C;
+    font-size: 20px;
+    transition: color 0.3s ease;
+  }
+  
+  .last a.edit-link:hover {
+    color: #0056b3; 
+  }
+  

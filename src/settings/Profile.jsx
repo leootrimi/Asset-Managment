@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react';
+import ProfileSideBar from '../components/Sidebar/ProfileSideBar';
 
 const Profile = () => {
   const [profileData, setProfileData] = useState({

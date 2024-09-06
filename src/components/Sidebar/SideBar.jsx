@@ -16,12 +16,12 @@ const SideBar = () => {
                 <h2>91Life</h2>
             </div>
             <div className="menu--list">
-                <a href="#" className='item'>
+                <a href="/admin/dashboard" className='item'>
                     <BiHome className='icon' />
                     Dashboard
                 </a>
 
-                <a href="#" className='item'>
+                <a href="/admin/show/user" className='item'>
                     <BiGroup className='icon' />
                     Employers
                 </a>

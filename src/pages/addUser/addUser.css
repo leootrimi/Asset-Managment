@@ -1,0 +1,27 @@
+.uploads {
+    background-color: #f5f5f5;
+    border-radius: 10px;
+    border: #8b9ab0 solid;
+}
+.save-btn{
+    background-color: #55679C;
+    border-radius: 5px;
+    color: white;
+}
+.first{
+    font-family: sans-serif;
+}
+.btn { 
+    color: white;
+}
+.d{
+    font-weight: 500;
+    font-family: sans-serif;
+}
+.upload {
+    bottom: 0;
+}
+label {
+    font-size: 14px;
+}
+

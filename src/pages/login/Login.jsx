@@ -1,17 +1,32 @@
 import React, { useState } from 'react';
 import { ReactComponent as LoginIcon } from '../../assets/signin.svg';
 import './Login.css';
+import { useNavigate } from 'react-router-dom';
 
-const Login = () => {
+const Login = ({onLogin}) => {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
+  const navigate = useNavigate(); // Initialize navigate
+  
 
-  const handleLogin = (e) => {
+  const handleSubmit = (e) => {
     e.preventDefault();
-    // Add your login logic here
-    console.log('Username:', username);
-    console.log('Password:', password);
+    // Simple validation example
+    if (username === 'admin' || password === 'admin') {
+      alert('Login Successful');
+      onLogin();
+      navigate('/admin/dashboard'); // Redirect to the home page after successful login
+    }
+    
+  
   };
+/*
+  const handleLogout = () => {
+    setIsLoggedIn(false);
+    setUsername('');
+    setPassword('');
+  };
+*/
 
   return (
     <div className="login-container">
@@ -21,7 +36,8 @@ const Login = () => {
         </div>
         <h1 className="login-heading">Welcome!</h1>
         <p className="login-message">Sign in to your account</p>
-        <form onSubmit={handleLogin}>
+
+        <form onSubmit={handleSubmit}>
           <div className="login-input-group">
             <label htmlFor="username">Username</label>
             <input
@@ -54,7 +70,9 @@ const Login = () => {
             <a href="#" className="forgot-password">Forgot password?</a>
           </div>
           <button type="submit" className="login-button">Sign In</button>
+    
         </form>
+
       </div>
     </div>
   );

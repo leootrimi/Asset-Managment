@@ -2,16 +2,22 @@ import React, { useState } from 'react';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import logo from './logo.svg';
 import Login from './pages/login/Login';
+import Navbar from './components/navbar/Navbar';
 import SideBar from './components/Sidebar/SideBar';
 import ProfileSideBar from './components/Sidebar/ProfileSideBar';
 import Profile from './settings/Profile';
 import Setting from './settings/Setting';
-//import Dashboard from './pages/dashboard/Dashboard';
+import Dashboard from './pages/dashboard/Dashboard';
+import AddUser from './pages/addUser/AddUser';
+import ShowUsers from './pages/showUsers/ShowUsers';
+import ShowEquipment from './pages/showEquipment/ShowEquipment';
 import './App.css';
 import { useLayoutEffect } from 'react';
+import { Navigate } from 'react-router-dom';
+
 
 function App() {
-
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [profileData, setProfileData] = useState({
     name: '',
     surname: '',
@@ -22,35 +28,57 @@ function App() {
     valuableNames: [''],
     deprecationValues: [''],
   });
+  
+  const handleLogin = () => {
+    setIsLoggedIn(true);
+  };
+
+  //logout logic unimplemented
+  /*
+  const handleLogout = () => {
+    setIsLoggedIn(false);
+  };
+  */
 
   const handleProfileUpdate = (data) => {
     setProfileData(data);
   };
+
   return (
     <Router>
       
           <Routes>
-            <Route path="/" element={<Login />} /> 
+            {/* <Route path="/" element={<Login />} />  */}
+            import { Navigate } from 'react-router-dom';
+            <Route
+          path="/"
+          element={isLoggedIn ? <Navigate to="/admin/dashboard" /> : <Login onLogin={handleLogin} />}
+            />
+
             <Route
               path="/admin/*"
               element={
                 <div className='main-layout'>
                   <SideBar />
-                  <div className='content'>
+                  <div className='content '>
                     <Routes>
-                      {/* <Route path='/dashboard' element={<Dashboard />} /> */}
+                      <Route path='/dashboard' element={<Dashboard />} />
+                      <Route path='/add/user' element={<AddUser />} />
+                      <Route path='/show/user' element={<ShowUsers />} />
+                      <Route path='/show/equipment' element={<ShowEquipment />} />
                     </Routes>
                   </div>
                 </div>
               }
               />
 
-
-            <Route path="/profile/*"
-            element={
-              <div className='main-layout'>
-              <ProfileSideBar />
-              <div className='content'>
+          {/* PROFILE PATH */}
+          <Route 
+          path="/profile/*"
+          element={
+            <div className='main-layout'>
+            <ProfileSideBar />
+            <div className='content'>
         <Routes>
           <Route path='/settings' element={<Setting onUpdate={handleProfileUpdate} />} />
           <Route path='/' element={<Profile profileData={profileData} />} />
