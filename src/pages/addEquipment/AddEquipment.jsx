@@ -1,110 +1,316 @@
-import React from 'react'
-import { BiLaptop, BiReset } from 'react-icons/bi'
-import Laptop from '../../components/equipments/Laptop'
-import Navbar from '../../components/navbar/Navbar'
+import React, { useState, useEffect } from 'react';
+import { BiReset } from 'react-icons/bi';
+import Navbar from '../../components/navbar/Navbar';
 
 function AddEquipment() {
+  const [employers, setEmployers] = useState([]);
+  const [selectedEmployer, setSelectedEmployer] = useState('');
+  const [formData, setFormData] = useState({
+    type: '',
+    model: '',
+    serialNo: '',
+    tag: '',
+    assignedForm: 'N',
+    price: '',
+    role: '',
+    purchaseDate: '',
+    dateOfReceipt: '',
+    warrantyExpirationDate: '',
+    supplier: '',
+  });
+
+  useEffect(() => {
+    const fetchEmployers = async () => {
+      try {
+        const response = await fetch('http://127.0.0.1:8000/employers/getname/');
+        if (!response.ok) {
+          throw new Error(`HTTP error! status: ${response.status}`);
+        }
+        
+        const data = await response.json();
+        console.log('Fetched data:', data); 
+        setEmployers(data);
+      } catch (error) {
+        console.error('Error fetching employer data:', error.message);
+      }
+    };
+    
+    fetchEmployers();
+  }, []);
+
+  const handleEmployerChange = (e) => {
+    setSelectedEmployer(e.target.value);
+  };
+
+  const handleChange = (e) => {
+    const { id, value } = e.target;
+    setFormData((prevData) => ({
+      ...prevData,
+      [id]: value,
+    }));
+  };
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+
+    if (!selectedEmployer) {
+      alert('Please select an employer');
+      return;
+    }
+
+    const dataToSubmit = {
+        employer: parseInt(selectedEmployer, 10),
+        role: formData.role || '',
+        purchase_date: formData.purchaseDate || '', 
+        date_of_receipt: formData.dateOfReceipt || '',
+        warranty_expiration_date: formData.warrantyExpirationDate || '',
+        supplier: formData.supplier || '',
+        equipment_type: formData.type || '',
+        model: formData.model || '',
+        serial_no: formData.serialNo || '', 
+        tag: formData.tag || '',
+        assigned_form: formData.assignedForm || 'N',
+        price: parseFloat(formData.price) || 0,
+      };
+
+    console.log('Submitting data:', dataToSubmit); 
+
+    try {
+      const response = await fetch('http://127.0.0.1:8000/equipment/add/', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(dataToSubmit),
+      });
+
+      if (!response.ok) {
+        const errorText = await response.text();
+        throw new Error(`HTTP error! status: ${response.status}`);
+      }
+
+      const result = await response.json();
+      console.log('Submitted data:', result); 
+      alert('Equipment added successfully!');
+      setFormData({
+        type: '',
+        model: '',
+        serialNo: '',
+        tag: '',
+        assignedForm: 'N',
+        price: '',
+        role: '',
+        purchaseDate: '',
+        dateOfReceipt: '',
+        warrantyExpirationDate: '',
+        supplier: '',
+      });
+      setSelectedEmployer('');
+    } catch (error) {
+      console.error('Error submitting data:', error.message);
+      alert('Error submitting equipment data.');
+    }
+  };
+
   return (
     <div className="container">
-        <Navbar pageTitle="Add Equipment"/>
-        
-        {/* Fieldset with Legend */}
-        <fieldset className="m border rounded p-3 mt-3">
-            <legend className=" px-2">Equipment Information</legend>
-            
-            <form className="d-flex flex-row justify-content-between gap-2 col-12">
-                <div className="left-column d-flex flex-column col-6">
-                    <div className="d-flex flex-row justify-content-between gap-21col-12">
-                    <div className="form-group mb-2 col-7 w-50">
-                        <label htmlFor="employeeId">Employer ID :</label>
-                        <input type="text" className="form-control" id="employeeId" />
-                    </div>
-                    <div className="form-group mb-2 col-5 ml-2 w-50">
-                        <label htmlFor="role">Role of employee</label>
-                        <input type="text" className="form-control" id="role" />
-                    </div>
-                    </div> 
+      <Navbar pageTitle="Add Equipment" />
 
-                    <div className="form-group mb-2">
-                        <label htmlFor="purchaseDate">Purchase date</label>
-                        <input type="date" className="form-control" id="purchaseDate" />
-                    </div>
+      <fieldset className="m border rounded p-3 mt-3">
+        <legend className="px-2">Equipment Information</legend>
 
-                    <div className="form-group mb-2">
-                        <label htmlFor="dateOfReceipt">Date of Receipt</label>
-                        <input type="date" className="form-control" id="dateOfReceipt" />
-                    </div>
+        <form className="d-flex flex-row justify-content-between gap-2 col-12" onSubmit={handleSubmit}>
+          <div className="left-column d-flex flex-column col-6">
+            <div className="d-flex flex-row justify-content-between gap-2 col-12">
+              <div className="form-group mb-2 col-7 w-50">
+                <label htmlFor="employeeId">Employer:</label>
+                <select
+                  className="form-control"
+                  id="employeeId"
+                  value={selectedEmployer}
+                  onChange={handleEmployerChange}
+                >
+                  <option value="">Select Employer</option>
+                  {employers.map((employer) => (
+                    <option key={employer.id} value={employer.id}>
+                      {employer.name} {employer.surname}
+                    </option>
+                  ))}
+                </select>
+              </div>
 
-                    <div className="form-group mb-2">
-                        <label htmlFor="warrantyExpirationDate">Warranty Expiration Date</label>
-                        <input type="date" className="form-control" id="warrantyExpirationDate" />
-                    </div>
+              <div className="form-group mb-2 col-5 ml-2 w-50">
+                <label htmlFor="role">Role of employee</label>
+                <input
+                  type="text"
+                  className="form-control"
+                  id="role"
+                  value={formData.role}
+                  onChange={handleChange}
+                />
+              </div>
+            </div>
 
-                    <div className="form-group mb-2">
-                        <label htmlFor="supplier">Supplier</label>
-                        <input type="text" className="form-control" id="supplier" />
-                    </div>
-                </div>
+            <div className="form-group mb-2">
+              <label htmlFor="purchaseDate">Purchase date</label>
+              <input
+                type="date"
+                className="form-control"
+                id="purchaseDate"
+                value={formData.purchaseDate}
+                onChange={handleChange}
+              />
+            </div>
 
-                <div className="right-column d-flex flex-column col-6">
-                    <div className="form-group d-flex flex-row justify-content-between col-12">
-                        <div className="col-6">
-                            <label htmlFor="type">Type:</label>
-                            <select name="type" id="type" className="form-control">
-                                <option value=""></option>
-                                <option value="Laptop">Laptop</option>
-                                <option value="Desktop">Desktop</option>
-                                <option value="Mouse">Mouse</option>
-                                <option value="TV">TV</option>
-                                <option value="Printer">Printer</option>
-                                <option value="Headphones">Headphones</option>
-                            </select>
-                        </div>
-                        <div className="form-group mb-2 col-6">
-                            <label htmlFor="model">Model :</label>
-                            <input type="text" className="form-control" id="model" />
-                        </div>
-                    </div>
+            <div className="form-group mb-2">
+              <label htmlFor="dateOfReceipt">Date of Receipt</label>
+              <input
+                type="date"
+                className="form-control"
+                id="dateOfReceipt"
+                value={formData.dateOfReceipt}
+                onChange={handleChange}
+              />
+            </div>
 
-                    <div className="form-group mb-2">
-                        <label htmlFor="serialNo">Serial No.</label>
-                        <input type="text" className="form-control" id="serialNo" />
-                    </div>
+            <div className="form-group mb-2">
+              <label htmlFor="warrantyExpirationDate">Warranty Expiration Date</label>
+              <input
+                type="date"
+                className="form-control"
+                id="warrantyExpirationDate"
+                value={formData.warrantyExpirationDate}
+                onChange={handleChange}
+              />
+            </div>
 
-                    <div className="form-group mb-2">
-                        <label htmlFor="status">Status</label>
-                        <input type="text" className="form-control" id="status" />
-                    </div>
+            <div className="form-group mb-2">
+              <label htmlFor="supplier">Supplier</label>
+              <input
+                type="text"
+                className="form-control"
+                id="supplier"
+                value={formData.supplier}
+                onChange={handleChange}
+              />
+            </div>
+          </div>
 
-                    <div className="form-group mb-2">
-                        <label htmlFor="assignedForm">Assigned form</label>
-                        <select className="form-control" id="assignedForm">
-                            <option value="Y">Yes</option>
-                            <option value="N">No</option>
-                        </select>
-                    </div>
+          <div className="right-column d-flex flex-column col-6">
+            <div className="form-group d-flex flex-row justify-content-between col-12">
+              <div className="col-6">
+                <label htmlFor="type">Type:</label>
+                <select
+                  name="type"
+                  id="type"
+                  className="form-control"
+                  value={formData.type}
+                  onChange={handleChange}
+                >
+                  <option value=""></option>
+                  <option value="Laptop">Laptop</option>
+                  <option value="Desktop">Desktop</option>
+                  <option value="Mouse">Mouse</option>
+                  <option value="TV">TV</option>
+                  <option value="Printer">Printer</option>
+                  <option value="Headphones">Headphones</option>
+                </select>
+              </div>
+              <div className="form-group mb-2 col-6">
+                <label htmlFor="model">Model :</label>
+                <input
+                  type="text"
+                  className="form-control"
+                  id="model"
+                  value={formData.model}
+                  onChange={handleChange}
+                />
+              </div>
+            </div>
 
-                    <div className="form-group mb-2">
-                        <label htmlFor="price">Price</label>
-                        <input type="number" className="form-control" id="price" />
-                    </div>
+            <div className="form-group mb-2">
+              <label htmlFor="serialNo">Serial No.</label>
+              <input
+                type="text"
+                className="form-control"
+                id="serialNo"
+                value={formData.serialNo}
+                onChange={handleChange}
+              />
+            </div>
 
-                </div>
-            </form>
-        </fieldset>
+            <div className="form-group mb-2">
+              <label htmlFor="tag">Tag</label>
+              <input
+                type="text"
+                className="form-control"
+                id="tag"
+                value={formData.tag}
+                onChange={handleChange}
+              />
+            </div>
 
-        
+            <div className="form-group mb-2">
+              <label htmlFor="assignedForm">Assigned form</label>
+              <select
+                className="form-control"
+                id="assignedForm"
+                value={formData.assignedForm}
+                onChange={handleChange}
+              >
+                <option value="Y">Yes</option>
+                <option value="N">No</option>
+              </select>
+            </div>
 
-        <div className="d-flex justify-content-end gap-2">
-            <div className="d">
-        <button type="submit" className="btn1 p-2 mt-3"><BiReset />Reset</button>
+            <div className="form-group mb-2">
+              <label htmlFor="price">Price</label>
+              <input
+                type="number"
+                className="form-control"
+                id="price"
+                value={formData.price}
+                onChange={handleChange}
+              />
+            </div>
+          </div>
+        </form>
+      </fieldset>
+
+      <div className="d-flex justify-content-end gap-2">
+        <div className="d">
+          <button
+            type="reset"
+            className="btn1 p-2 mt-3"
+            onClick={() => setFormData({
+              type: '',
+              model: '',
+              serialNo: '',
+              tag: '',
+              assignedForm: 'N',
+              price: '',
+              role: '',
+              purchaseDate: '',
+              dateOfReceipt: '',
+              warrantyExpirationDate: '',
+              supplier: '',
+            })}
+          >
+            <BiReset /> Reset
+          </button>
         </div>
         <div className="d">
-        <button type="submit" className="btn1 p-2 mt-3">Submit</button>
+          <button
+            type="submit"
+            className="btn1 p-2 mt-3"
+            onClick={handleSubmit}
+          >
+            Submit
+          </button>
         </div>
-        </div>
+      </div>
     </div>
-  )
+  );
 }
 
-export default AddEquipment
+export default AddEquipment;
