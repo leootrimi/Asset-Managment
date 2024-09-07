@@ -4,6 +4,7 @@ import { Table, Pagination, Form } from 'react-bootstrap';
 import { BiEdit, BiPlus } from 'react-icons/bi';
 import Navbar from '../../components/navbar/Navbar';
 import './ShowUsers.css';
+import { fetchUsers } from '../../services/ShowUsers';
 
 function ShowUsers({ selectedLogo }) {
     const navigate = useNavigate();
@@ -18,13 +19,9 @@ function ShowUsers({ selectedLogo }) {
     });
 
     useEffect(() => {
-        const fetchData = async () => {
+        const getData = async () => {
             try {
-                const response = await fetch('http://127.0.0.1:8000/employers/get/');
-                if (!response.ok) {
-                    throw new Error('Network response was not ok');
-                }
-                const result = await response.json();
+                const result = await fetchUsers();
                 console.log('Fetched Data:', result);
                 setData(result);
             } catch (error) {
@@ -32,7 +29,7 @@ function ShowUsers({ selectedLogo }) {
             }
         };
 
-        fetchData();
+        getData();
     }, []);
 
     const handleRowClick = (employeeId) => {
@@ -43,14 +40,12 @@ function ShowUsers({ selectedLogo }) {
 
     const handlePageChange = (pageNumber) => setCurrentPage(pageNumber);
 
-    // Filter data based on selectedLogo and filter inputs
     const filteredData = data
         .filter(item => item.department === selectedLogo)
         .filter(item => item.name.toLowerCase().includes(filters.name.toLowerCase()))
         .filter(item => item.position.toLowerCase().includes(filters.position.toLowerCase()))
         .filter(item => item.country.toLowerCase().includes(filters.country.toLowerCase()));
 
-    // Slice the data for pagination
     const currentData = filteredData.slice((currentPage - 1) * itemsPerPage, currentPage * itemsPerPage);
 
     const handleFilterChange = (e) => {

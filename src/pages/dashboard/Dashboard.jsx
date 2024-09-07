@@ -1,3 +1,4 @@
+import React, { useState, useEffect } from 'react';
 import { BiLock, BiUserCircle, BiBarChart, BiLineChart, BiGlobe, BiMoney } from "react-icons/bi";
 import { BsTools } from "react-icons/bs";
 import Navbar from "../../components/navbar/Navbar";
@@ -5,10 +6,31 @@ import './Dashboard.css';
 import { Doughnut } from 'react-chartjs-2';
 import BestSellingProductsChart from '../../components/charts/DashChart'
 import { Chart as ChartJS, ArcElement, Tooltip, Legend } from 'chart.js';
+import { fetchCount, fetchTotal } from "../../services/Dashboard";
 
 ChartJS.register(ArcElement, Tooltip, Legend);
 
 const Dashboard = () => {
+    const [totalEquipments, setTotalEquipments] = useState(null); 
+    const [totalPrice, setTotalPrice] = useState(null); 
+
+    useEffect(() => {
+        const getCountAndPrice = async () => {
+            try {
+                const [countResponse, priceResponse] = await Promise.all([fetchCount(), fetchTotal()]);
+
+                setTotalEquipments(countResponse.count);
+                setTotalPrice(priceResponse.total_price);
+                
+                console.log('Total price:', priceResponse.total_price);
+            } catch (error) {
+                console.error('Error fetching data:', error.message);
+            }
+        };
+
+        getCountAndPrice();
+    }, []);
+    
 
     const data = {
         labels: ['Product A', 'Product B', 'Product C'],
@@ -70,7 +92,7 @@ const Dashboard = () => {
                     <BsTools className="metric-icon" />
                     <div className="metric-details">
                         <h3>Total equipments</h3>
-                        <p className="metric-number">34</p>
+                        <p className="metric-number">{totalEquipments !== null ? totalEquipments : 'Loading...'}</p>
                         <span className="metric-change positive">+12 from June</span>
                     </div>
                 </div>
@@ -103,7 +125,7 @@ const Dashboard = () => {
             <div className="sales-chart mt-2 d-flex flex-row gap-2">
                 <div className="total-price col-6">
                     <h5 className="h mt-3">Overall equipment price</h5>
-                    <p className="metric-number">$80,456.79</p>
+                    <p className="metric-number">${totalPrice}</p>
                     <span className="metric-change positive">+78.50%</span>
                 </div>
                 <div className="total-price col-6">

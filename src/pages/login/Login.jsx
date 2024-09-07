@@ -7,7 +7,7 @@ const Login = ({ onLogin }) => {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
-  const navigate = useNavigate(); // Initialize navigate
+  const navigate = useNavigate();
   
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -26,9 +26,11 @@ const Login = ({ onLogin }) => {
 
       if (response.ok) {
         const data = await response.json();
+        localStorage.setItem('token', data.token);
+        localStorage.setItem('username', username);
         alert('Login Successful');
-        onLogin();  // Callback to update parent state (if needed)
-        navigate('/admin/dashboard');  // Navigate to dashboard after successful login
+        onLogin();  
+        navigate('/admin/dashboard'); 
       } else {
         const errorData = await response.json();
         setError(errorData.error || 'Login failed. Please try again.');

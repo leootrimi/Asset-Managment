@@ -3,6 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import { Table, Pagination } from 'react-bootstrap';
 import { BiEdit, BiPlus, BiSearch } from 'react-icons/bi';
 import Navbar from '../../components/navbar/Navbar';
+import {fetchEquipmentData} from '../../services/ShowEquipment'
 import './ShowEquipment.css';
 
 function ShowEquipment({ selectedLogo }) {
@@ -25,23 +26,16 @@ function ShowEquipment({ selectedLogo }) {
     const [warrantyExpirationDateFilter, setWarrantyExpirationDateFilter] = useState('');
 
     useEffect(() => {
-        const fetchEquipmentData = async () => {
+        const loadEquipmentData = async () => {
             try {
-                const response = await fetch('http://127.0.0.1:8000/equipment/get/');
-                if (!response.ok) {
-                    throw new Error(`HTTP error! status: ${response.status}`);
-                }
-                const data = await response.json();
-                console.log(data); // Log data to check format
+                const data = await fetchEquipmentData(); 
                 setEquipmentData(data);
             } catch (error) {
                 console.error('Error fetching equipment data:', error.message);
             }
         };
-    
-        fetchEquipmentData();
+        loadEquipmentData();
     }, []);
-    
 
     const handleRowClick = (serialNumber) => {
         navigate(`/admin/equipment/${serialNumber}`);
@@ -184,7 +178,7 @@ function ShowEquipment({ selectedLogo }) {
                                 <td>{item.date_of_receipt}</td>
                                 <td>{item.warranty_expiration_date}</td>
                                 <td className="last">
-                                    <a onClick={() => handleRowClick(item.serialNumber)} className="edit-link"><BiEdit /></a>
+                                    <a onClick={() => handleRowClick(item.serial_no)} className="edit-link"><BiEdit /></a>
                                 </td>
                             </tr>
                         ))}
