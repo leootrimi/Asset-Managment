@@ -1,46 +1,43 @@
 import React, { useState, useEffect } from 'react';
 import Navbar from '../../components/navbar/Navbar';
-import { items } from '../../data'; 
+import {fetchEquipmentBySerial} from '../../services/EquipmentProfile'
 import './EquipmentProfile.css';
 import { useParams } from 'react-router-dom'; 
 
 function EquipmentProfile() {
-  const [employees, setEmployees] = useState([]);
-  const [selectedEmployee, setSelectedEmployee] = useState('');
   const [equipment, setEquipment] = useState(null);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null); 
 
   const { serial } = useParams(); 
-  
+
   useEffect(() => {
-    const fetchEmployees = async () => {
-      const employeeData = [
-        { id: '1', name: 'John Doe' },
-        { id: '2', name: 'Jane Smith' },
-        { id: '3', name: 'Emily Johnson' }
-      ];
-      setEmployees(employeeData);
-    };
-
-    fetchEmployees();
-
-  
     const fetchEquipmentData = async () => {
-      const selectedItem = items.find(item => item.serial === serial);
-      setEquipment(selectedItem); 
-      if (selectedItem) {
-        setSelectedEmployee(selectedItem.employeeId); 
+      setLoading(true);
+      try {
+        const data = await fetchEquipmentBySerial(serial); 
+        setEquipment(data);
+        console.log(data);
+      } catch (err) {
+        setError('Error fetching equipment data');
+      } finally {
+        setLoading(false);
       }
     };
 
     fetchEquipmentData();
   }, [serial]);
 
-  const handleEmployeeChange = (event) => {
-    setSelectedEmployee(event.target.value);
-  };
+  if (loading) {
+    return <div>Loading...</div>;
+  }
+
+  if (error) {
+    return <div>{error}</div>;
+  }
 
   if (!equipment) {
-    return <div>Loading...</div>; 
+    return <div>No equipment data available</div>;
   }
 
   return (
@@ -51,22 +48,9 @@ function EquipmentProfile() {
         <div className="col-lg-4 col-md-6">
           <div className="card p-4 shadow">
             <h5 className="mb-4">General Information</h5>
-            <p><strong>Asset ID:</strong> {equipment.serial}</p>
+            <p><strong>Asset ID:</strong> {equipment.serial_no}</p>
             <p><strong>Status:</strong> {equipment.status}</p>
-            <p className="d-flex align-items-center">
-              <strong>Assigned:</strong>
-              <select
-                className="form-control ms-2"
-                value={selectedEmployee}
-                onChange={handleEmployeeChange}
-              >
-                {employees.map(employee => (
-                  <option key={employee.id} value={employee.id}>
-                    {employee.name}
-                  </option>
-                ))}
-              </select>
-            </p>
+            <p><strong>Assigned:</strong> {equipment.assignedEmployeeName || 'Unassigned'}</p>
             <p><strong>Department:</strong> {equipment.department}</p>
             <p><strong>Assigned Date:</strong> {equipment.assignedDate}</p>
           </div>
@@ -75,11 +59,11 @@ function EquipmentProfile() {
         <div className="col-lg-4 col-md-6">
           <div className="card bg-light-subtle p-4 shadow">
             <h5 className="mb-4">Specifications</h5>
-            <p><strong>Type:</strong> {equipment.type}</p>
+            <p><strong>Type:</strong> {equipment.equipment_type}</p>
             <p><strong>Model:</strong> {equipment.model}</p>
             <p><strong>Serial Number:</strong> {equipment.serial}</p>
-            <p><strong>Purchase Date:</strong> {equipment.purchaseDate}</p>
-            <p><strong>Warranty Expiration:</strong> {equipment.warrantyExpiration}</p>
+            <p><strong>Purchase Date:</strong> {equipment.purchase_date}</p>
+            <p><strong>Warranty Expiration:</strong> {equipment.warranty_expiration_date}</p>
           </div>
         </div>
 
@@ -88,7 +72,7 @@ function EquipmentProfile() {
             <h5 className="mb-4">Depreciation Values</h5>
             <p><strong>Price Bought:</strong> ${equipment.price}</p>
             <p><strong>Depreciation Value per Year:</strong> ${equipment.depreciation}</p>
-            <p><strong>Years Used:</strong> 2 years</p>
+            <p><strong>Years Used:</strong> {equipment.yearsUsed} years</p>
             <p><strong>Current Value:</strong> ${equipment.currentPrice}</p>
             <p><strong>Remaining Time:</strong> {equipment.remainingTime} years</p>
           </div>

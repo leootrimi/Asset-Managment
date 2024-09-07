@@ -7,6 +7,13 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import './Navbar.css';
 
 function Navbar({pageTitle}) {
+
+    const handleLogout = () => {
+        localStorage.removeItem('token');
+        window.location.href = '/'; 
+      };
+
+
   return (
     <div className="d-flex flex-row justify-content-between align-items-center mt-3">
         <div className="">
@@ -16,13 +23,13 @@ function Navbar({pageTitle}) {
             <BiNotification className="me-3" />
             <Dropdown>
                 <Dropdown.Toggle variant="" id="dropdown-basic">
-                    John Doe
+                    {localStorage.getItem('username')}
                 </Dropdown.Toggle>
 
                 <Dropdown.Menu className="text-center">
                     <Dropdown.Item href="#/action-1"><BiUser /><span></span> Profile</Dropdown.Item>
                     <Dropdown.Item href="#/action-2"><BsGear /> <span></span> Settings</Dropdown.Item>
-                    <Dropdown.Item href="#/action-3"><BiLogOut /> <span></span> Log out</Dropdown.Item>
+                    <Dropdown.Item onClick={handleLogout}><BiLogOut /> <span></span> Log out</Dropdown.Item>
                 </Dropdown.Menu>
             </Dropdown>
         </div>
