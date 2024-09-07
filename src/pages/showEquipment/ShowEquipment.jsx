@@ -1,18 +1,13 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Table, Pagination } from 'react-bootstrap';
 import { BiEdit, BiPlus, BiSearch } from 'react-icons/bi';
-import { data } from '../../data'; // Assuming this file exports the data array
 import Navbar from '../../components/navbar/Navbar';
 import './ShowEquipment.css';
 
 function ShowEquipment({ selectedLogo }) {
     const navigate = useNavigate();
-
-    const handleRowClick = (employeeId) => {
-        navigate(`/admin/equipment/${employeeId}`);
-    };
-
+    const [equipmentData, setEquipmentData] = useState([]);
     const [currentPage, setCurrentPage] = useState(1);
     const itemsPerPage = 10;
 
@@ -29,9 +24,32 @@ function ShowEquipment({ selectedLogo }) {
     const [dateOfReceiptFilter, setDateOfReceiptFilter] = useState('');
     const [warrantyExpirationDateFilter, setWarrantyExpirationDateFilter] = useState('');
 
-    const filteredDataByLogo = data.filter((item) => item.logo === selectedLogo);
+    useEffect(() => {
+        const fetchEquipmentData = async () => {
+            try {
+                const response = await fetch('http://127.0.0.1:8000/equipment/get/');
+                if (!response.ok) {
+                    throw new Error(`HTTP error! status: ${response.status}`);
+                }
+                const data = await response.json();
+                console.log(data); // Log data to check format
+                setEquipmentData(data);
+            } catch (error) {
+                console.error('Error fetching equipment data:', error.message);
+            }
+        };
+    
+        fetchEquipmentData();
+    }, []);
+    
 
-    const filteredData = filteredDataByLogo.filter((item) => {
+    const handleRowClick = (serialNumber) => {
+        navigate(`/admin/equipment/${serialNumber}`);
+    };
+
+    // const filteredDataByLogo = equipmentData.filter((item) => item.logo === selectedLogo);
+
+    const filteredData = equipmentData.filter((item) => {
         return (
             (!employeeIdFilter || item.employeeId.toString().includes(employeeIdFilter)) &&
             (!typeFilter || item.type.includes(typeFilter)) &&
@@ -139,7 +157,7 @@ function ShowEquipment({ selectedLogo }) {
                             <th>Type</th>
                             <th>Model</th>
                             <th>Serial No.</th>
-                            <th>Status</th>
+                            <th>Tag</th>
                             <th>Role of Employee</th>
                             <th>Assigned Form</th>
                             <th>Purchase Date</th>
@@ -153,18 +171,18 @@ function ShowEquipment({ selectedLogo }) {
                     <tbody>
                         {currentData.map((item, index) => (
                             <tr key={index}>
-                                <td>{item.employeeId}</td>
-                                <td>{item.type}</td>
+                                <td>{item.employer}</td>
+                                <td>{item.equipment_type}</td>
                                 <td>{item.model}</td>
-                                <td>{item.serialNumber}</td>
-                                <td>{item.status}</td>
-                                <td>{item.roleOfEmployee}</td>
-                                <td>{item.assignedForm}</td>
-                                <td>{item.purchaseDate}</td>
+                                <td>{item.serial_no}</td>
+                                <td>{item.tag}</td>
+                                <td>{item.role}</td>
+                                <td>{item.assigned_form}</td>
+                                <td>{item.purchase_date}</td>
                                 <td>{item.price}</td>
                                 <td>{item.supplier}</td>
-                                <td>{item.dateOfReceipt}</td>
-                                <td>{item.warrantyExpirationDate}</td>
+                                <td>{item.date_of_receipt}</td>
+                                <td>{item.warranty_expiration_date}</td>
                                 <td className="last">
                                     <a onClick={() => handleRowClick(item.serialNumber)} className="edit-link"><BiEdit /></a>
                                 </td>
