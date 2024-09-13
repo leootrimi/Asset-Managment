@@ -12,3 +12,16 @@ export const fetchEquipmentBySerial = async (serial) => {
     }
   };
   
+
+  export const fetchByID = async (id) => {
+    try {
+      const response = await fetch(`http://127.0.0.1:8000/employers/${id}/`)
+      if(!response.ok){
+        throw new Error('Failed to fetch data');
+      }
+      return await response.json()
+    } catch (error) {
+      console.error('Error fetching employers data:', error);
+      throw error;
+    }
+  };
