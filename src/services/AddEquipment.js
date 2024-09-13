@@ -37,3 +37,33 @@ export const fetchEmployers = async () => {
     }
   };
   
+  export const fetchModel = async (type) => {
+    try {
+      const response = await fetch(`http://127.0.0.1:8000/model/${type}/`);
+      if (!response.ok) {
+        throw new Error(`HTTP error! status: ${response.status}`);
+      }
+  
+      const data = await response.json();
+      return data; 
+    } catch (error) {
+      console.error('Error fetching model data:', error.message);
+      throw error;
+    }
+  };
+  
+
+  export const fetchModelCount = async (model) => {
+    try {
+      const response = await fetch(`http://127.0.0.1:8000/model/get/${model}/count`);
+      if (!response.ok) {
+        throw new Error(`HTTP error! status: ${response.status}`);
+      }
+      const data = await response.json();
+      console.log(data);
+      return data.count;
+    } catch (error) {
+      console.error('Error fetching model count:', error.message);
+    }
+  };
+  

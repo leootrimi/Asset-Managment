@@ -40,10 +40,11 @@ function ShowEquipment({ selectedLogo }) {
     const handleRowClick = (serialNumber) => {
         navigate(`/admin/equipment/${serialNumber}`);
     };
+    console.log(equipmentData);
 
-    // const filteredDataByLogo = equipmentData.filter((item) => item.logo === selectedLogo);
-
-    const filteredData = equipmentData.filter((item) => {
+    const filteredDataByLogo = equipmentData.filter((item) => item.departament === selectedLogo);
+    console.log(filteredDataByLogo);
+    const filteredData = filteredDataByLogo.filter((item) => {
         return (
             (!employeeIdFilter || item.employeeId.toString().includes(employeeIdFilter)) &&
             (!typeFilter || item.type.includes(typeFilter)) &&

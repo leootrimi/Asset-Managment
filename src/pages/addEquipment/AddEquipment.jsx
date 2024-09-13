@@ -1,10 +1,13 @@
 import React, { useState, useEffect } from 'react';
 import { BiReset } from 'react-icons/bi';
+import { fetchModel, fetchModelCount } from '../../services/AddEquipment';
 import Navbar from '../../components/navbar/Navbar';
 
 function AddEquipment() {
   const [employers, setEmployers] = useState([]);
   const [selectedEmployer, setSelectedEmployer] = useState('');
+  const count = '0000';
+  const [models, setModels] = useState([]); 
   const [formData, setFormData] = useState({
     type: '',
     model: '',
@@ -26,54 +29,90 @@ function AddEquipment() {
         if (!response.ok) {
           throw new Error(`HTTP error! status: ${response.status}`);
         }
-        
         const data = await response.json();
-        console.log('Fetched data:', data); 
         setEmployers(data);
       } catch (error) {
         console.error('Error fetching employer data:', error.message);
       }
     };
-    
     fetchEmployers();
   }, []);
+
+
+  const fetchModelsByType = async (type) => {
+    try {
+      const response = await fetch(`http://127.0.0.1:8000/model/get/${type}`);
+      if (!response.ok) {
+        throw new Error(`HTTP error! status: ${response.status}`);
+      }
+      const data = await response.json();
+      console.log(data);
+      setModels(data); 
+    } catch (error) {
+      console.error('Error fetching models:', error.message);
+    }
+  };
+
+  useEffect(() => {
+    if (formData.type) {
+      fetchModelsByType(formData.type);
+    }
+
+  }, [formData.type]);
 
   const handleEmployerChange = (e) => {
     setSelectedEmployer(e.target.value);
   };
 
-  const handleChange = (e) => {
+  const handleChange = async (e) => {
     const { id, value } = e.target;
-    setFormData((prevData) => ({
-      ...prevData,
-      [id]: value,
-    }));
+  
+    if (id === 'type') {
+      setFormData((prevData) => ({
+        ...prevData,
+        [id]: value,
+        model: '', 
+        tag: '',  
+      }));
+      fetchModelsByType(value);
+    } else if (id === 'model') {
+      const selectedModel = models.find((model) => model.model === value);
+      
+      const modelCount = await fetchModelCount(value);
+      console.log(modelCount);
+      
+      setFormData((prevData) => ({
+        ...prevData,
+        [id]: value,
+        tag: selectedModel ? selectedModel.prefix + (count + modelCount) : '',  
+      }));
+    } else {
+      setFormData((prevData) => ({
+        ...prevData,
+        [id]: value,
+      }));
+    }
   };
+  
+  
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-
-    if (!selectedEmployer) {
-      alert('Please select an employer');
-      return;
-    }
-
     const dataToSubmit = {
-        employer: parseInt(selectedEmployer, 10),
-        role: formData.role || '',
-        purchase_date: formData.purchaseDate || '', 
-        date_of_receipt: formData.dateOfReceipt || '',
-        warranty_expiration_date: formData.warrantyExpirationDate || '',
-        supplier: formData.supplier || '',
-        equipment_type: formData.type || '',
-        model: formData.model || '',
-        serial_no: formData.serialNo || '', 
-        tag: formData.tag || '',
-        assigned_form: formData.assignedForm || 'N',
-        price: parseFloat(formData.price) || 0,
-      };
-
-    console.log('Submitting data:', dataToSubmit); 
+      employer: parseInt(selectedEmployer, 10),
+      role: formData.role || '',
+      purchase_date: formData.purchaseDate || '', 
+      date_of_receipt: formData.dateOfReceipt || '',
+      warranty_expiration_date: formData.warrantyExpirationDate || '',
+      supplier: formData.supplier || '',
+      equipment_type: formData.type || '',
+      model: formData.model || '',
+      serial_no: formData.serialNo || '', 
+      tag: formData.tag || '',
+      assigned_form: formData.assignedForm || 'N',
+      price: parseFloat(formData.price) || 0,
+      departament: formData.departament || '',
+    };
 
     try {
       const response = await fetch('http://127.0.0.1:8000/equipment/add/', {
@@ -90,7 +129,6 @@ function AddEquipment() {
       }
 
       const result = await response.json();
-      console.log('Submitted data:', result); 
       alert('Equipment added successfully!');
       setFormData({
         type: '',
@@ -121,7 +159,7 @@ function AddEquipment() {
 
         <form className="d-flex flex-row justify-content-between gap-2 col-12" onSubmit={handleSubmit}>
           <div className="left-column d-flex flex-column col-6">
-            <div className="d-flex flex-row justify-content-between gap-2 col-12">
+            <div className="d-flex flex-row justify-content-between  col-12">
               <div className="form-group mb-2 col-7 w-50">
                 <label htmlFor="employeeId">Employer:</label>
                 <select
@@ -217,15 +255,21 @@ function AddEquipment() {
                 </select>
               </div>
               <div className="form-group mb-2 col-6">
-                <label htmlFor="model">Model :</label>
-                <input
-                  type="text"
-                  className="form-control"
-                  id="model"
-                  value={formData.model}
-                  onChange={handleChange}
-                />
-              </div>
+                  <label htmlFor="model">Model :</label>
+                  <select
+                    className="form-control"
+                    id="model"
+                    value={formData.model}
+                    onChange={handleChange}
+                  >
+                    <option value="">Select Model</option>
+                    {models.map((model) => (
+                      <option key={model.id} value={model.model}>
+                        {model.model}
+                      </option>
+                    ))}
+                  </select>
+                </div>
             </div>
 
             <div className="form-group mb-2">
@@ -258,56 +302,46 @@ function AddEquipment() {
                 value={formData.assignedForm}
                 onChange={handleChange}
               >
-                <option value="Y">Yes</option>
                 <option value="N">No</option>
+                <option value="Y">Yes</option>
               </select>
             </div>
 
             <div className="form-group mb-2">
               <label htmlFor="price">Price</label>
               <input
-                type="number"
+                type="text"
                 className="form-control"
                 id="price"
                 value={formData.price}
                 onChange={handleChange}
               />
             </div>
+
+            <div className="form-group mb-2">
+              <label htmlFor="departament">Departament</label>
+              <select
+                className="form-control"
+                id="departament"
+                value={formData.assignedForm}
+                onChange={handleChange}
+              >
+                <option value="91Life">91Life</option>
+                <option value="Matrics">Matrics</option>
+              </select>
+            </div>
           </div>
         </form>
       </fieldset>
 
-      <div className="d-flex justify-content-end gap-2">
-        <div className="d">
-          <button
-            type="reset"
-            className="btn1 p-2 mt-3"
-            onClick={() => setFormData({
-              type: '',
-              model: '',
-              serialNo: '',
-              tag: '',
-              assignedForm: 'N',
-              price: '',
-              role: '',
-              purchaseDate: '',
-              dateOfReceipt: '',
-              warrantyExpirationDate: '',
-              supplier: '',
-            })}
-          >
-            <BiReset /> Reset
-          </button>
-        </div>
-        <div className="d">
-          <button
-            type="submit"
-            className="btn1 p-2 mt-3"
-            onClick={handleSubmit}
-          >
-            Submit
-          </button>
-        </div>
+      <div className="d-flex justify-content-end mt-3 gap-2">
+        <button className="btn btn-primary" type="submit" onClick={handleSubmit}>
+          Submit
+        </button>
+        <button className="btn btn-danger" type="reset">
+          <BiReset className="mr-1" />
+          Reset
+        </button>
       </div>
     </div>
   );
