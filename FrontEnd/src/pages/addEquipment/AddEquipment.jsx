@@ -79,12 +79,13 @@ function AddEquipment() {
       const selectedModel = models.find((model) => model.model === value);
       
       const modelCount = await fetchModelCount(value);
+      const paddedModelCount = String(modelCount).padStart(4, '0');
       console.log(modelCount);
       
       setFormData((prevData) => ({
         ...prevData,
         [id]: value,
-        tag: selectedModel ? selectedModel.prefix + (count + modelCount) : '',  
+        tag: selectedModel ? selectedModel.prefix + paddedModelCount : '',  
       }));
     } else {
       setFormData((prevData) => ({
@@ -335,10 +336,10 @@ function AddEquipment() {
       </fieldset>
 
       <div className="d-flex justify-content-end mt-3 gap-2">
-        <button className="btn btn-primary" type="submit" onClick={handleSubmit}>
+        <button className="btn1 p-2 " type="submit" onClick={handleSubmit}>
           Submit
         </button>
-        <button className="btn btn-danger" type="reset">
+        <button className="btn1 p-2" type="reset">
           <BiReset className="mr-1" />
           Reset
         </button>
