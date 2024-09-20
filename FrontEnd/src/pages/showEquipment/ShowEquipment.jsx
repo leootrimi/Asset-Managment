@@ -46,20 +46,21 @@ function ShowEquipment({ selectedLogo }) {
     console.log(filteredDataByLogo);
     const filteredData = filteredDataByLogo.filter((item) => {
         return (
-            (!employeeIdFilter || item.employeeId.toString().includes(employeeIdFilter)) &&
-            (!typeFilter || item.type.includes(typeFilter)) &&
-            (!modelFilter || item.model.includes(modelFilter)) &&
-            (!serialNumberFilter || item.serialNumber.includes(serialNumberFilter)) &&
-            (!statusFilter || item.status.includes(statusFilter)) &&
-            (!roleOfEmployeeFilter || item.roleOfEmployee.includes(roleOfEmployeeFilter)) &&
-            (!assignedFormFilter || item.assignedForm.includes(assignedFormFilter)) &&
-            (!purchaseDateFilter || item.purchaseDate.includes(purchaseDateFilter)) &&
-            (!priceFilter || item.price.toString().includes(priceFilter)) &&
-            (!supplierFilter || item.supplier.includes(supplierFilter)) &&
-            (!dateOfReceiptFilter || item.dateOfReceipt.includes(dateOfReceiptFilter)) &&
-            (!warrantyExpirationDateFilter || item.warrantyExpirationDate.includes(warrantyExpirationDateFilter))
+            (!employeeIdFilter || (item.employeeId && item.employeeId.toString().includes(employeeIdFilter))) &&
+            (!typeFilter || (item.equipment_type && item.equipment_type.includes(typeFilter))) &&
+            (!modelFilter || (item.model && item.model.includes(modelFilter))) &&
+            (!serialNumberFilter || (item.serialNumber && item.serialNumber.includes(serialNumberFilter))) &&
+            (!statusFilter || (item.status && item.status.includes(statusFilter))) &&
+            (!roleOfEmployeeFilter || (item.role && item.role.includes(roleOfEmployeeFilter))) &&
+            (!assignedFormFilter || (item.assigned_form && item.assigned_form.includes(assignedFormFilter))) &&
+            (!purchaseDateFilter || (item.purchaseDate && item.purchaseDate.includes(purchaseDateFilter))) &&
+            (!priceFilter || (item.price && item.price.toString().includes(priceFilter))) &&
+            (!supplierFilter || (item.supplier && item.supplier.includes(supplierFilter))) &&
+            (!dateOfReceiptFilter || (item.dateOfReceipt && item.dateOfReceipt.includes(dateOfReceiptFilter))) &&
+            (!warrantyExpirationDateFilter || (item.warrantyExpirationDate && item.warrantyExpirationDate.includes(warrantyExpirationDateFilter)))
         );
     });
+    
 
     const totalPages = Math.ceil(filteredData.length / itemsPerPage);
 
@@ -79,8 +80,8 @@ function ShowEquipment({ selectedLogo }) {
                     <a href="/admin/add/user" className='btn1'>Add new</a>
                 </div>
             </div>
-            <form className="m d-flex flex-row justify-content-between gap-2 mt-2 col-12 p-3 w-100">
-                <div className="h col-2">
+            <form className="m d-flex flex-row justify-content-between gap-1 mt-2 col-12 p-3 w-100">
+                <div className="h col-3">
                     <h6>What you looking for?</h6>
                     <input
                         type="text"
@@ -89,7 +90,7 @@ function ShowEquipment({ selectedLogo }) {
                         onChange={(e) => setModelFilter(e.target.value)}
                     />
                 </div>
-                <div className="h col-2">
+                <div className="h col-3">
                     <h6>Type</h6>
                     <select
                         className='form-control'
@@ -102,7 +103,7 @@ function ShowEquipment({ selectedLogo }) {
                         <option value="Mouse">Mouse</option>
                     </select>
                 </div>
-                <div className="h col-2">
+                <div className="h col-3">
                     <h6>Job title</h6>
                     <select
                         className='form-control'
@@ -110,24 +111,13 @@ function ShowEquipment({ selectedLogo }) {
                         onChange={(e) => setRoleOfEmployeeFilter(e.target.value)}
                     >
                         <option value="">All</option>
-                        <option value="DevOps Engineer">DevOps</option>
+                        <option value="DevOps">DevOps</option>
                         <option value="FrontEnd">FrontEnd</option>
                         <option value="BackEnd">BackEnd</option>
                         <option value="Project Manager">Project Manager</option>
                     </select>
                 </div>
-                <div className="h col-2">
-                    <h6>Status</h6>
-                    <select
-                        className='form-control'
-                        value={statusFilter}
-                        onChange={(e) => setStatusFilter(e.target.value)}
-                    >
-                        <option value="">All</option>
-                        <option value="In Use">In use</option>
-                        <option value="Not using">Not using</option>
-                    </select>
-                </div>
+
                 <div className="h col-2">
                     <h6>Assigned</h6>
                     <select
@@ -139,9 +129,6 @@ function ShowEquipment({ selectedLogo }) {
                         <option value="Y">Y</option>
                         <option value="N">N</option>
                     </select>
-                </div>
-                <div className="bi p-2 col-2 d-flex justify-content-center mt-2">
-                    <button type="button" className='btn1 w-75 mt-2'><BiSearch /></button>
                 </div>
             </form>
             <div className="table-container mt-3">

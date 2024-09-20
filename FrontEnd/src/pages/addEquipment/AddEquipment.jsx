@@ -111,6 +111,7 @@ function AddEquipment() {
         tag: '',
         
       }));
+      
       fetchModelsByType(value);
     } else if (id === 'model') {
       const selectedModel = models.find((model) => model.model === value);
@@ -130,6 +131,7 @@ function AddEquipment() {
         [id]: value,
       }));
     }
+    console.log(formData.departament)
   };
   
   
