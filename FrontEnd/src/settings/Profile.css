@@ -1,0 +1,35 @@
+.profile-container {
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 20px;
+  }
+  
+  .profile-title {
+    text-align: center;
+    margin-bottom: 30px;
+  }
+  
+  .profile-card-container {
+    display: flex;
+    justify-content: space-between; /* Adjust space between cards */
+    flex-wrap: wrap; /* Allow cards to wrap on smaller screens */
+  }
+  
+  .profile-card {
+    flex: 1; /* Each card takes up equal space */
+    margin: 20px; /* Increased margin around cards */
+    padding: 20px;
+    border: 1px solid #dee2e6;
+    border-radius: 0.5rem;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    min-width: 300px; /* Minimum width for better responsiveness */
+  }
+  
+  .profile-card-body {
+    padding: 10px;
+  }
+  
+  .valuable-section {
+    margin-top: 30px;
+  }
+  
