@@ -13,6 +13,8 @@ import ShowEquipment from './pages/showEquipment/ShowEquipment';
 import AddEquipment from './pages/addEquipment/AddEquipment';
 import Deprecation from './pages/deprecation/Deprecation';
 import EquipmentProfile from './pages/EquipmentProfile/EquipmentProfile';
+import RequestAdmin from './pages/request/RequestAdmin';
+import Request from './pages/request/Request';
 import './App.css';
 import React, { useState, useEffect } from 'react';
 import { Navigate } from 'react-router-dom';
@@ -55,11 +57,14 @@ function App() {
                   <Route path='/deprecation' element={<Deprecation />} />
                   <Route path='/profile/settings' element={<Setting />} />
                   <Route path='/profile/:id' element={<Profile />} />
+                  <Route path='/request' element={<RequestAdmin />} />
                 </Routes>
               </div>
             </div>
           }
         />
+
+      <Route path='/request' element={<Request />} /> 
       </Routes>
     </Router>
   );
