@@ -93,8 +93,19 @@ body {
     color: green;
     font-size: 24px;
     margin-right: 7px;
+    transition: 0.5s;
 }
 .iconsX {
     color: red;
     font-size: 24px;
+    transition: 0.5s;
+}
+
+.iconsR:hover{
+    cursor: pointer;
+    box-shadow: 0 0 10px green;
+}
+.iconsX:hover{
+    cursor: pointer;
+    box-shadow: 0 0 10px red;
 }

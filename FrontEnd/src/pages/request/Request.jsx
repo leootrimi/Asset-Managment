@@ -23,7 +23,8 @@ function Request() {
     quantity: '',
     urgency: 'regular', 
     justification: '',
-    notes: ''
+    notes: '',
+    status: ''
   });
 
   const handleShow = (item) => {
@@ -43,6 +44,7 @@ function Request() {
       urgency: data.get('urgency'),
       justification: data.get('justification'),
       equipmentType: selectedItem,
+      status: 'Pending',
     };
   
     setFormData(formValues);
