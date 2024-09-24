@@ -19,14 +19,69 @@ const jsonData = [
 ];
 
 function RequestAdmin() {
-  const [selectedOption, setSelectedOption] = useState('Option 1');
+  const [selectedOption, setSelectedOption] = useState('Pending');
   const [page, setPage] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(5);
   const [rows, setRows] = useState([]);
+  const [loading, setLoading] = useState(true);
+    const [error, setError] = useState(null);
 
   useEffect(() => {
-    setRows(jsonData);
-  }, []);
+    const fetchData = async () => {
+        try {
+            const response = await fetch(`http://127.0.0.1:8000/req/get/${selectedOption}`);
+            if (!response.ok) {
+                throw new Error('Network response was not ok');
+            }
+            const data = await response.json();
+            setRows(data);
+            console.log(rows);
+        } catch (error) {
+            setError(error.message);
+        } finally {
+            setLoading(false);
+        }
+    };
+
+    fetchData();
+}, [selectedOption]);
+
+const approve = async (id) => {
+    try {
+        const response = await fetch(`http://127.0.0.1:8000/req/approve/${id}/`, {
+            method: 'PUT',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({ status: 'Approved' }),
+        });
+
+        if (!response.ok) {
+            throw new Error('Failed to approve request');
+        }
+    } catch (error) {
+        console.error(error);
+    }
+};
+
+const reject = async (id) => {
+    try {
+        const response = await fetch(`http://127.0.0.1:8000/req/reject/${id}/`, {
+            method: 'PUT',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({ status: 'Rejected' }),
+        });
+
+        if (!response.ok) {
+            throw new Error('Failed to reject request');
+        }
+    } catch (error) {
+        console.error(error);
+    }
+};
+
 
   const handleBreadcrumbClick = (option) => {
     setSelectedOption(option);
@@ -38,7 +93,7 @@ function RequestAdmin() {
 
   const handleChangeRowsPerPage = (event) => {
     setRowsPerPage(parseInt(event.target.value, 10));
-    setPage(0); // Reset to the first page when changing rows per page
+    setPage(0);
   };
 
   return (
@@ -47,24 +102,24 @@ function RequestAdmin() {
       <div className="row justify-content-center align-items-center text-center gap-3 breadcrumbs">
         <div className="col-md-1">
           <div
-            className={`breadcrumb-item ${selectedOption === 'Option 1' ? 'active' : ''}`}
-            onClick={() => handleBreadcrumbClick('Option 1')}
+            className={`breadcrumb-item ${selectedOption === 'Pending' ? 'active' : ''}`}
+            onClick={() => handleBreadcrumbClick('Pending')}
           >
             <span className="circle yellow"></span>Pending
           </div>
         </div>
         <div className="col-md-1">
           <div
-            className={`breadcrumb-item ${selectedOption === 'Option 2' ? 'active' : ''}`}
-            onClick={() => handleBreadcrumbClick('Option 2')}
+            className={`breadcrumb-item ${selectedOption === 'Approved' ? 'active' : ''}`}
+            onClick={() => handleBreadcrumbClick('Approved')}
           >
             <span className="circle green"></span>Approved
           </div>
         </div>
         <div className="col-md-1">
           <div
-            className={`breadcrumb-item ${selectedOption === 'Option 3' ? 'active' : ''}`}
-            onClick={() => handleBreadcrumbClick('Option 3')}
+            className={`breadcrumb-item ${selectedOption === 'Rejected' ? 'active' : ''}`}
+            onClick={() => handleBreadcrumbClick('Rejected')}
           >
             <span className="circle red"></span>Rejected
           </div>
@@ -76,6 +131,7 @@ function RequestAdmin() {
           <Table sx={{ minWidth: 650 }} aria-label="simple table">
             <TableHead>
               <TableRow>
+                 <TableCell>ID</TableCell>
                 <TableCell>Name</TableCell>
                 <TableCell align="right">Department</TableCell>
                 <TableCell align="right">Role</TableCell>
@@ -86,20 +142,21 @@ function RequestAdmin() {
             </TableHead>
             <TableBody>
               {rows
-                .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage) // Show only the rows for the current page
+                .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage) 
                 .map((row, index) => (
                   <TableRow key={index} sx={{ '&:last-child td, &:last-child th': { border: 0 } }}>
+                    <TableCell align="right">{row.id}</TableCell>
                     <TableCell component="th" scope="row">
-                      {row.name}
+                      {row.full_name}
                     </TableCell>
                     <TableCell align="right">{row.department}</TableCell>
                     <TableCell align="right">{row.role}</TableCell>
-                    <TableCell align="right">{row.request}</TableCell>
+                    <TableCell align="right">{row.equipment_type}</TableCell>
                     <TableCell align="right">{row.urgency}</TableCell>
-                    <TableCell align="right">{row.reason}</TableCell>
+                    <TableCell align="right">{row.justification}</TableCell>
                     <TableCell align="right">
-                        <FaCheckCircle className='iconsR'  />
-                        <FaTimesCircle className='iconsX'  />
+                        <FaCheckCircle className='iconsR' onClick={() => approve(row.id)} />
+                        <FaTimesCircle className='iconsX' onClick={() => reject(row.id)}  />
                     </TableCell>
                   </TableRow>
                 ))}
