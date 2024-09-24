@@ -58,7 +58,7 @@ const SideBar = ({ selectedLogo, setSelectedLogo }) => {
                     </div>
                 )}
 
-                <a href="#" className='item'>
+                <a href="/admin/request" className='item'>
                     <BiMessage className='icon' />
                     Requests
                 </a>

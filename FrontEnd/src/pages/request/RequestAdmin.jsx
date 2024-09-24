@@ -1,22 +1,13 @@
 import React, { useState, useEffect } from 'react';
 import Navbar from '../../components/navbar/Navbar';
-import { Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper, TablePagination } from '@mui/material';
-import CheckCircleIcon from '@mui/icons-material/CheckCircle';
-import CancelIcon from '@mui/icons-material/Cancel';
+import { Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper, TablePagination,Dialog,
+    DialogTitle,
+    DialogContent,
+    DialogContentText,
+    DialogActions, Button } from '@mui/material';
 import { FaCheckCircle, FaTimesCircle } from 'react-icons/fa';
 import './Request.css';
 
-// Simulated JSON data
-const jsonData = [
-  { id: 1, name: 'John Doe', department: '91Life', role: 'Software Engineer', request: 'Laptop', urgency: 'Urgent', reason:'IDK ADSD' },
-  { id: 2, name: 'Jane Smith', department: '91Life', role: 'Project Manager', request: 'Headphone', urgency: 'Normal', reason:'IDK ADSD' },
-  { id: 3, name: 'Bob Johnson', department: 'Matrics', role: 'Designer', request: 'Laptop', urgency: 'Urgent', reason:'IDK ADSD' },
-  { id: 4, name: 'Alice Brown', department: '91Life', role: 'Developer' , request: 'Desktop', urgency: 'Urgent', reason:'IDK ADSD'},
-  { id: 5, name: 'Charlie Williams', department: 'Matrics', role: 'QA Engineer' , request: 'Keyboard', urgency: 'Normal', reason:'IDK ADSD'},
-  { id: 6, name: 'Chris Evans', department: '91Life', role: 'Team Lead', request: 'Mouse', urgency: 'Urgent', reason:'IDK ADSD' },
-  { id: 7, name: 'Robert Downey', department: 'Matrics', role: 'Senior Developer' , request: 'Laptop', urgency: 'Normal', urgency: 'Urgent', reason:'IDK ADSD'},
-  { id: 8, name: 'Scarlett Johansson', department: '91Life', role: 'Product Manager', request: 'Laptop', urgency: 'Normal', reason:'IDK ADSD'},
-];
 
 function RequestAdmin() {
   const [selectedOption, setSelectedOption] = useState('Pending');
@@ -25,6 +16,8 @@ function RequestAdmin() {
   const [rows, setRows] = useState([]);
   const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
+    const [openDialog, setOpenDialog] = useState(false);
+  const [justificationText, setJustificationText] = useState('');
 
   useEffect(() => {
     const fetchData = async () => {
@@ -62,6 +55,7 @@ const approve = async (id) => {
     } catch (error) {
         console.error(error);
     }
+
 };
 
 const reject = async (id) => {
@@ -95,6 +89,16 @@ const reject = async (id) => {
     setRowsPerPage(parseInt(event.target.value, 10));
     setPage(0);
   };
+
+  const handleClickOpen = (justification) => {
+    setJustificationText(justification);
+    setOpenDialog(true);
+  };
+
+  const handleClose = () => {
+    setOpenDialog(false);
+  };
+
 
   return (
     <div className='container'>
@@ -141,29 +145,41 @@ const reject = async (id) => {
               </TableRow>
             </TableHead>
             <TableBody>
-              {rows
-                .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage) 
-                .map((row, index) => (
-                  <TableRow key={index} sx={{ '&:last-child td, &:last-child th': { border: 0 } }}>
-                    <TableCell align="right">{row.id}</TableCell>
-                    <TableCell component="th" scope="row">
-                      {row.full_name}
-                    </TableCell>
-                    <TableCell align="right">{row.department}</TableCell>
-                    <TableCell align="right">{row.role}</TableCell>
-                    <TableCell align="right">{row.equipment_type}</TableCell>
-                    <TableCell align="right">{row.urgency}</TableCell>
-                    <TableCell align="right">{row.justification}</TableCell>
-                    <TableCell align="right">
+                {rows
+                    .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage) 
+                    .map((row, index) => (
+                    <TableRow key={index} sx={{ '&:last-child td, &:last-child th': { border: 0 } }}>
+                        <TableCell align="right">{row.id}</TableCell>
+                        <TableCell component="th" scope="row">
+                        {row.full_name}
+                        </TableCell>
+                        <TableCell align="right">{row.department}</TableCell>
+                        <TableCell align="right">{row.role}</TableCell>
+                        <TableCell align="right">{row.equipment_type}</TableCell>
+                        <TableCell align="right">{row.urgency}</TableCell>
+                        <TableCell align="right" onClick={() => handleClickOpen(row.justification)} style={{ cursor: 'pointer', textDecoration: 'underline' }}>
+                          {row.justification.length > 30 ? `${row.justification.substring(0, 30)}...` : row.justification}
+                         </TableCell>
+                        <TableCell align="right">
                         <FaCheckCircle className='iconsR' onClick={() => approve(row.id)} />
-                        <FaTimesCircle className='iconsX' onClick={() => reject(row.id)}  />
-                    </TableCell>
-                  </TableRow>
-                ))}
-            </TableBody>
+                        <FaTimesCircle className='iconsX' onClick={() => reject(row.id)} />
+                        </TableCell>
+                    </TableRow>
+                    ))}
+                </TableBody>
+                <Dialog open={openDialog} onClose={handleClose}>
+        <DialogTitle>Justification</DialogTitle>
+        <DialogContent>
+          <DialogContentText>
+            {justificationText}
+          </DialogContentText>
+        </DialogContent>
+        <DialogActions>
+          <Button onClick={handleClose} color="primary">Close</Button>
+        </DialogActions>
+      </Dialog>
           </Table>
 
-          {/* Pagination Component */}
           <TablePagination
             rowsPerPageOptions={[5, 10, 15]}
             component="div"
@@ -175,6 +191,9 @@ const reject = async (id) => {
           />
         </TableContainer>
       </div>
+
+     
+
     </div>
   );
 }

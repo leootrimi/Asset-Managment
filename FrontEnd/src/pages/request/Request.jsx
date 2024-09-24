@@ -37,17 +37,36 @@ function Request() {
     const data = new FormData(e.currentTarget);
   
     const formValues = {
-      employeeName: data.get('employeeName'),
-      employeeId: data.get('employeeId'),
+      full_name: data.get('employeeName'),
+      employee_id: data.get('employeeId'),
       department: data.get('department'),
-      contactInfo: data.get('contactInfo'),
+      contact_info: data.get('contactInfo'),
       urgency: data.get('urgency'),
       justification: data.get('justification'),
-      equipmentType: selectedItem,
+      equipment_type: selectedItem,
       status: 'Pending',
     };
   
     setFormData(formValues);
+
+    try {
+      const response = await fetch('http://127.0.0.1:8000/req/add/', {
+          method: 'POST',
+          headers: {
+              'Content-Type': 'application/json',
+          },
+          body: JSON.stringify(formValues),
+      });
+
+      if (!response.ok) {
+          throw new Error('Failed to save data');
+      }
+
+      const responseData = await response.json(); 
+      console.log('Data saved successfully:', responseData);
+  } catch (error) {
+      console.error('Error:', error);
+  }
     console.log(formValues);
   };
 
