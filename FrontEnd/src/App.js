@@ -3,6 +3,7 @@ import logo from './logo.svg';
 import Login from './pages/login/Login';
 import Navbar from './components/navbar/Navbar';
 import SideBar from './components/Sidebar/SideBar';
+import PrivateRoute from './seccurity/PrivateRoute';
 import ProfileSideBar from './components/Sidebar/ProfileSideBar';
 import Profile from './settings/Profile';
 import Setting from './settings/Setting';
@@ -44,6 +45,7 @@ function App() {
         <Route
           path="/admin/*"
           element={
+            <PrivateRoute>
             <div className='main-layout'>
               <SideBar selectedLogo={selectedLogo} setSelectedLogo={setSelectedLogo} />
               <div className='content'>
@@ -61,6 +63,7 @@ function App() {
                 </Routes>
               </div>
             </div>
+            </PrivateRoute>
           }
         />
 
