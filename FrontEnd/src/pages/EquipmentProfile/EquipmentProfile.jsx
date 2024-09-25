@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import Navbar from '../../components/navbar/Navbar';
+import { Table, TableBody, TableCell, TableContainer, TableRow, Paper } from '@mui/material';
 import { BiSave } from 'react-icons/bi';
 import { fetchEquipmentBySerial, fetchByID } from '../../services/EquipmentProfile';
 import './EquipmentProfile.css';
@@ -90,7 +91,7 @@ function EquipmentProfile() {
 
       {employer && (
             <div className="row mt-3">
-              <div className="col-lg-6 col-md-12">
+              <div className="col-lg-4 col-md-12">
                 <div className="card p-4 shadow">
                   <h5 className="mb-4">Employer Information</h5>
                   <div className="row">
@@ -107,22 +108,26 @@ function EquipmentProfile() {
                   </div>
                 </div>
               </div>
-              <div className="col-lg-6 col-md-12">
-                <div className="card p-4 shadow">
-                  <h5 className="mb-4">Employer Information</h5>
-                  <div className="row">
-                    <div className="col-md-6">
-                      <p><strong>Name:</strong> {employer.name + " " + employer.surname}</p>
-                      <p><strong>Position:</strong> {employer.position}</p>
-                      <p><strong>Department:</strong> {employer.department}</p>
-                    </div>
-                    <div className="col-md-6">
-                      <p><strong>Personal No:</strong> {employer.personal_no}</p>
-                      <p><strong>Registerd Date:</strong> {employer.reg_date}</p>
-                      <p><strong>Phone No:</strong> {employer.phone_number_1}</p>
-                    </div>
-                  </div>
-                </div>
+              <div className="col-lg-8 col-md-12">
+              <TableContainer component={Paper} elevation={3} className="p-4 shadow">
+      <Table aria-label="employer information table">
+        <TableBody>
+          <TableRow>
+            <TableCell><strong>Id:</strong> </TableCell>
+            <TableCell><strong>Name:</strong></TableCell>
+            <TableCell><strong>From:</strong> </TableCell>
+            <TableCell><strong>To:</strong></TableCell>
+
+          </TableRow>
+          <TableRow>
+            <TableCell>{employer.name + " " + employer.surname}</TableCell>
+            <TableCell>{employer.position}</TableCell>
+            <TableCell>{employer.department}</TableCell>
+            <TableCell>{employer.personal_no}</TableCell>
+          </TableRow>
+        </TableBody>
+      </Table>
+    </TableContainer>
               </div>
             </div>
           )}
