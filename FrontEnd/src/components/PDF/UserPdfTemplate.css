@@ -1,0 +1,56 @@
+.pdf-template {
+    padding: 20px;
+    font-size: 14px;
+}
+
+.pdf-name {
+    font-size: 20px;
+    margin-bottom: 10px;
+}
+
+.pdf-equipment-title {
+    font-size: 18px;
+    margin-top: 20px;
+}
+
+.equipment-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 10px; 
+}
+
+.table-header {
+    background-color: #f2f2f2;
+}
+
+.equipment-table th,
+.equipment-table td {
+    border: 1px solid #ddd;
+    padding: 8px;
+    text-align: left; 
+}
+
+.no-data {
+    text-align: center;
+    padding: 8px;
+}
+
+.signature-section {
+    margin-top: 30px; 
+}
+
+.signature-name {
+    font-weight: bold; 
+    font-size: 16px;   
+    margin-bottom: 5px;
+}
+
+.signature-line {
+    border: none;
+    border-top: 1px solid #000; 
+    margin: 0; 
+}
+.img1 {
+    width: 80px;
+    height: 80px;
+}

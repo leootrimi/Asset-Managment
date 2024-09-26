@@ -1,12 +1,16 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState , useRef} from 'react';
 import './Profile.css'; // Import the CSS file
 import { useParams, useNavigate } from 'react-router-dom';
 import { Col, Row } from 'react-bootstrap';
-import boy from '../assets/boy.png'
+import boy from '../assets/boy.png';
+import html2canvas from 'html2canvas';
+import jsPDF from 'jspdf';
+import UserPdfTemplate from '../components/PDF/UserPdfTemplate';
 import { Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper } from '@mui/material';
 
 const Profile = () => {
   const navigate = useNavigate();
+  const printRef = useRef();
   const [profileData, setProfileData] = useState({
     name: '',
     personal_no: '',
@@ -64,6 +68,40 @@ const Profile = () => {
   useEffect(() => {
     console.log('Updated Equipment Data:', equipmentData); // Log after equipmentData updates
   }, [equipmentData]);
+
+  const generatePDF = () => {
+    // Use html2canvas to capture the component
+    html2canvas(printRef.current, {
+        scale: 2, // Increase scale for better quality
+        useCORS: true // Enable cross-origin image support if you have images
+    }).then((canvas) => {
+        const imgData = canvas.toDataURL('image/png');
+        const pdf = new jsPDF('p', 'pt', 'a4'); // Create a new PDF document
+
+        const imgWidth = pdf.internal.pageSize.getWidth() - 20; // Adjust width with margins
+        const pageHeight = pdf.internal.pageSize.getHeight();
+        const imgHeight = (canvas.height * imgWidth) / canvas.width; // Calculate image height
+        let heightLeft = imgHeight;
+
+        let position = 0;
+
+        // Add the image to the PDF
+        pdf.addImage(imgData, 'PNG', 10, position, imgWidth, imgHeight); // Adjust positioning
+        heightLeft -= pageHeight; // Decrease height left to track remaining space
+
+        // Loop to add additional pages if needed
+        while (heightLeft >= 0) {
+            position = heightLeft - imgHeight; // Set the position for the next page
+            pdf.addPage(); // Add a new page
+            pdf.addImage(imgData, 'PNG', 10, position, imgWidth, imgHeight); // Add the image again
+            heightLeft -= pageHeight; // Update height left
+        }
+
+        pdf.save(`${profileData.name}_profile.pdf`); // Save the PDF
+    });
+};
+
+
 
   return (
     <div className="container p-4">
@@ -144,6 +182,14 @@ const Profile = () => {
           </TableContainer>
         </Col>
       </Row>
+      <div className="row text-center">
+      <div ref={printRef} className='d-none'>
+        <UserPdfTemplate userData={profileData} equipmentData={equipmentData} />
+      </div>
+      <div className='p-1'>
+      <button className='btn1' onClick={generatePDF}>Download PDF</button>
+      </div>
+      </div>
     </div>
   );
 };
