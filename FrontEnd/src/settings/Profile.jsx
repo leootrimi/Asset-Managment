@@ -183,7 +183,7 @@ const Profile = () => {
         </Col>
       </Row>
       <div className="row text-center">
-      <div ref={printRef} className='d-none'>
+      <div ref={printRef} className=''>
         <UserPdfTemplate userData={profileData} equipmentData={equipmentData} />
       </div>
       <div className='p-1'>

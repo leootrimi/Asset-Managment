@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { BiMailSend, BiLaptop } from 'react-icons/bi';
-import laptop from '../../assets/laptop.png';
+import laptop from '../../assets/laptop2.png';
 import desktop from '../../assets/desktop.png';
 import headphones from '../../assets/headphones.png';
 import mouse from '../../assets/mouse.png';
