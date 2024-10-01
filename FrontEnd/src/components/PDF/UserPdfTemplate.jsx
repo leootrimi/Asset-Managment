@@ -1,24 +1,24 @@
 import React from 'react';
-import life from '../../assets/91life.jpg'
+import life from '../../assets/91life.jpg';
 import './UserPdfTemplate.css';
 
 const UserPdfTemplate = ({ userData, equipmentData }) => {
     return (
         <div className="pdf-template">
-          <div className="img1">
-            <img src={life} className='w-100 h-100' alt="" srcset="" />
-          </div>
-          <div className="d-flex flex-row justify-content-between align-items-center">
-            <div className="d">
-              <h1 className="pdf-name">{userData.name + " " + userData.surname}</h1>
-              <p><strong>Position:</strong> {userData.position}</p>
-              <p><strong>Department:</strong> {userData.department}</p>
+            <div className="img1">
+                <img src={life} className='w-100 h-100' alt="" />
             </div>
-            <div className="d">
-              <h1 className="pdf-name">{userData.name + " " + userData.surname}</h1>
-              <p><strong>Position:</strong> {userData.position}</p>
-              <p><strong>Department:</strong> {userData.department}</p>
-            </div>
+            <div className="d-flex flex-row justify-content-between align-items-center">
+                <div className="d">
+                    <h1 className="pdf-name">{userData.name + " " + userData.surname}</h1>
+                    <p><strong>Position:</strong> {userData.position}</p>
+                    <p><strong>Department:</strong> {userData.department}</p>
+                </div>
+                <div className="d">
+                    <h1 className="pdf-name">{userData.name + " " + userData.surname}</h1>
+                    <p><strong>Position:</strong> {userData.position}</p>
+                    <p><strong>Department:</strong> {userData.department}</p>
+                </div>
             </div>
             
             <h2 className="pdf-equipment-title">Equipment:</h2>
@@ -52,17 +52,17 @@ const UserPdfTemplate = ({ userData, equipmentData }) => {
                     )}
                 </tbody>
             </table>
-            
-            <div className="signature-section">
+
+            <div className="signature-section mb-0">
                 <div className="row">
                     <div className="col text-center">
                         <p className="signature-name">Mjellma Zhuri</p>
-                        <hr className="signature-line" />
+                        <hr className="signature-line mt-4" />
                         <p>Signature</p>
                     </div>
                     <div className="col text-center">
                         <p className="signature-name">{userData.name + " " + userData.surname}</p>
-                        <hr className="signature-line" />
+                        <hr className="signature-line mt-4" />
                         <p>Signature</p>
                     </div>
                 </div>
