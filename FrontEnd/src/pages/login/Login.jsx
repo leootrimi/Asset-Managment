@@ -27,6 +27,7 @@ const Login = ({ onLogin }) => {
       if (response.ok) {
         const data = await response.json();
         localStorage.setItem('token', data.token);
+        console.log(data);
         localStorage.setItem('username', username);
         alert('Login Successful');
         onLogin();  
